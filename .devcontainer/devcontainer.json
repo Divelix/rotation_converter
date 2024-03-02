@@ -1,0 +1,23 @@
+{
+    "name": "Rotation Converter",
+    "dockerFile": "Dockerfile",
+    "runArgs": [
+        // "--privileged",
+        // "--network=host",
+        "--name=rotation_converter"
+    ],
+    "workspaceMount": "source=${localWorkspaceFolder},target=/home/user/rotation_converter,type=bind,consistency=cached",
+    "workspaceFolder": "/home/user/rotation_converter",
+    "onCreateCommand": "bash .devcontainer/setup.sh",
+    "containerEnv": { "SHELL": "/bin/bash" },
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash",
+                "terminal.integrated.profiles.linux": { "bash": { "path": "/usr/bin/bash" } },
+                "terminal.integrated.cwd": "/home/user/rotation_converter"
+            },
+            "extensions": [ "Vue.volar", "ms-azuretools.vscode-docker" ]
+        }
+    }
+}
