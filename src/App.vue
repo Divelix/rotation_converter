@@ -1,14 +1,18 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+// import HelloWorld from './components/HelloWorld.vue'
 import TheWelcome from './components/TheWelcome.vue'
+import CoordView from './components/CoordView.vue'
 </script>
 
 <template>
   <header>
     <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+    <!-- <div class="wrapper">
+      <HelloWorld msg="I did it!" />
+    </div> -->
+    <div class="coord_view">
+      <CoordView/>
     </div>
   </header>
 

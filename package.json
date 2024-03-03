@@ -11,6 +11,7 @@
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
+    "@types/three": "^0.162.0",
     "three": "^0.162.0",
     "vue": "^3.4.15"
   },
