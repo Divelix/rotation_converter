@@ -1,34 +1,34 @@
 <script setup lang="ts">
 // import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
+// import TheWelcome from './components/TheWelcome.vue'
 import CoordView from './components/CoordView.vue'
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <!-- <div class="wrapper">
-      <HelloWorld msg="I did it!" />
-    </div> -->
-    <div class="coord_view">
-      <CoordView/>
-    </div>
+    <h1>Rotation Converter</h1>
   </header>
 
   <main>
-    <TheWelcome />
+    <div class="coord_view">
+      <CoordView/>
+    </div>
+    <!-- <RotMat /> -->
   </main>
 </template>
 
 <style scoped>
 header {
-  line-height: 1.5;
+  line-height: 2.5;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
+h1 {
+  text-align: center;
+}
+
+.coord_view {
+  width: 100%;
+  text-align: center;
 }
 
 @media (min-width: 1024px) {
