@@ -1,78 +1,49 @@
 <template>
   <canvas ref="experience"></canvas>
   <br>
-  <span style="color: red;">X</span>
-  <input
-    type="range"
-    :min="minAngle"
-    :max="maxAngle"
-    :value="sliderX"
-    @input="onChangeSlider(BtnAxes.X, $event)"
-    ref="refSliderX"
-  />
-  <span>{{ sliderX }}</span>
+  <input type="checkbox" v-model="isLocal"> <label>local</label>
   <br>
-  <span style="color: green;">Y</span>
-  <input
-    type="range"
-    :min="minAngle"
-    :max="maxAngle"
-    :value="sliderY"
-    @input="onChangeSlider(BtnAxes.Y, $event)"
-    ref="refSliderY"
-  />
-  <span>{{ sliderY }}</span>
+  <button class="sign" @click="minusX">-</button>
+  <span class="x">X</span>
+  <button class="sign" @click="plusX">+</button>
   <br>
-  <span style="color: blue;">Z</span>
-  <input
-    type="range"
-    :min="minAngle"
-    :max="maxAngle"
-    :value="sliderZ"
-    @input="onChangeSlider(BtnAxes.Z, $event)"
-    ref="refSliderZ"
-  />
-  <span>{{ sliderZ }}</span>
+  <button class="sign" @click="minusY">-</button>
+  <span class="y">Y</span>
+  <button class="sign" @click="plusY">+</button>
+  <br>
+  <button class="sign" @click="minusZ">-</button>
+  <span class="z">Z</span>
+  <button class="sign" @click="plusZ">+</button>
   <br>
   <button class="coord" @click="setX">x</button>
   <button class="coord" @click="setY">y</button>
   <button class="coord" @click="setZ">z</button>
-  <p>{{ rotFrame.matrix.elements[0].toFixed(2) }} {{ rotFrame.matrix.elements[1].toFixed(2) }} {{ rotFrame.matrix.elements[2].toFixed(2) }}</p>
-  <p>{{ rotFrame.matrix.elements[4].toFixed(2) }} {{ rotFrame.matrix.elements[5].toFixed(2) }} {{ rotFrame.matrix.elements[6].toFixed(2) }}</p>
-  <p>{{ rotFrame.matrix.elements[8].toFixed(2) }} {{ rotFrame.matrix.elements[9].toFixed(2) }} {{ rotFrame.matrix.elements[10].toFixed(2) }}</p>
+  <p>{{ rotMat[0] }} {{ rotMat[1] }} {{ rotMat[2] }}</p>
+  <p>{{ rotMat[4] }} {{ rotMat[5] }} {{ rotMat[6] }}</p>
+  <p>{{ rotMat[8] }} {{ rotMat[9] }} {{ rotMat[10] }}</p>
 </template>
 
 
 <script setup lang="ts">
 import {BufferGeometry, CylinderGeometry, Group, Line, LineBasicMaterial, Matrix4, Mesh, MeshBasicMaterial, PerspectiveCamera, Scene, Vector3, WebGLRenderer} from 'three'
-import {computed, onMounted, ref, shallowRef, watch} from 'vue'
+import {onMounted, ref, shallowRef, watch} from 'vue'
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
-import { clamp } from 'three/src/math/MathUtils.js';
 
 // Reactive stuff
-const sliderX = shallowRef(0)
-const sliderY = shallowRef(0)
-const sliderZ = shallowRef(0)
-const sliderAsAngleX = computed(()=>Math.PI / 6 * sliderX.value)
-const sliderAsAngleY = computed(()=>Math.PI / 6 * sliderY.value)
-const sliderAsAngleZ = computed(()=>Math.PI / 6 * sliderZ.value)
-const refSliderX = ref<HTMLInputElement | null>(null)
-const refSliderY = ref<HTMLInputElement | null>(null)
-const refSliderZ = ref<HTMLInputElement | null>(null)
+const isLocal = shallowRef(true)
+const rotMat = ref<string[]>(new Matrix4().identity().elements.map(e => e.toFixed(2)))
 const experience = ref<HTMLCanvasElement | null>(null)
-const minAngle = ref(-3)
-const maxAngle = ref(3)
 
 // Constants
 enum BtnAxes {X, Y, Z}
 const [W, H] = [500, 500]
-const CAM_POS = new Vector3(3,3,3)
+const CAM_POS = new Vector3(2,2,2)
 const CAM_LOOKAT = new Vector3(0,0,0)
 const AXIS_LEN = 2
 const CYL_RADIUS = 0.05
 const CYL_LENGTH = 1
 const CYL_RESOLUTION = 10
-const SNAP_SIZE = 1
+const SNAP_SIZE = Math.PI / 6
 
 // Variables
 let controls: OrbitControls
@@ -80,42 +51,44 @@ let renderer: WebGLRenderer
 let currAxis: BtnAxes = BtnAxes.X
 
 // Methods
-watch(sliderX, (newX) => {
-  (refSliderX.value as unknown as HTMLInputElement).value = newX.toString()
-  const rads = sliderAsAngleX.value
-  const rm = new Matrix4().makeRotationX(rads)
-  rotFrame.setRotationFromMatrix(rm)
-  rotFrame.updateMatrix()
-})
-watch(sliderY, (newY) => {
-  (refSliderY.value as unknown as HTMLInputElement).value = newY.toString()
-  const rads = sliderAsAngleY.value
-  const rm = new Matrix4().makeRotationY(rads)
-  rotFrame.setRotationFromMatrix(rm)
-  rotFrame.updateMatrix()
-})
-watch(sliderZ, (newZ) => {
-  (refSliderZ.value as unknown as HTMLInputElement).value = newZ.toString()
-  const rads = sliderAsAngleZ.value
-  const rm = new Matrix4().makeRotationZ(rads)
-  rotFrame.setRotationFromMatrix(rm)
-  rotFrame.updateMatrix()
-})
-
-function onChangeSlider(axis: BtnAxes, event: Event) {
-  let value = Number((event.target as HTMLInputElement).value)
-  switch(axis) {
-    case BtnAxes.X:
-      sliderX.value = value
-      break
-    case BtnAxes.Y:
-      sliderY.value = value
-      break
-    case BtnAxes.Z:
-      sliderZ.value = value
-      break
+function snapRotate(axis: BtnAxes, rads: number) {
+  currAxis = axis
+  if (isLocal.value) {
+    switch(axis) {
+      case BtnAxes.X:
+        rotFrame.rotateX(rads)
+        break
+      case BtnAxes.Y:
+        rotFrame.rotateY(rads)
+        break
+      case BtnAxes.Z:
+        rotFrame.rotateZ(rads)
+        break
+    }
+  } else {
+  const rm = new Matrix4()
+    switch(axis) {
+      case BtnAxes.X:
+        rm.makeRotationX(rads)
+        break
+      case BtnAxes.Y:
+        rm.makeRotationY(rads)
+        break
+      case BtnAxes.Z:
+        rm.makeRotationZ(rads)
+        break
+    }
+    rotFrame.applyMatrix4(rm)
   }
+  rotFrame.updateMatrix()
+  rotMat.value = rotFrame.matrix.elements.map(e => e.toFixed(2))
 }
+const minusX = () => snapRotate(BtnAxes.X, -SNAP_SIZE)
+const plusX = () => snapRotate(BtnAxes.X, SNAP_SIZE)
+const minusY = () => snapRotate(BtnAxes.Y, -SNAP_SIZE)
+const plusY = () => snapRotate(BtnAxes.Y, SNAP_SIZE)
+const minusZ = () => snapRotate(BtnAxes.Z, -SNAP_SIZE)
+const plusZ = () => snapRotate(BtnAxes.Z, SNAP_SIZE)
 
 function setX() {
   currAxis = BtnAxes.X
@@ -129,17 +102,31 @@ function setZ() {
 
 function handleScroll(event: WheelEvent) {
   event.preventDefault()
-  let scrollValue = event.deltaY < 0 ? SNAP_SIZE : -SNAP_SIZE
-  switch(currAxis){
-    case BtnAxes.X:
-      sliderX.value = clamp(sliderX.value + scrollValue, minAngle.value, maxAngle.value)
-      break
-    case BtnAxes.Y:
-      sliderY.value = clamp(sliderY.value + scrollValue, minAngle.value, maxAngle.value)
-      break
-    case BtnAxes.Z:
-      sliderZ.value = clamp(sliderZ.value + scrollValue, minAngle.value, maxAngle.value)
-      break
+  const isUp = event.deltaY > 0
+  if (isUp) {
+    switch(currAxis){
+      case BtnAxes.X:
+        plusX()
+        break
+      case BtnAxes.Y:
+        plusY()
+        break
+      case BtnAxes.Z:
+        plusZ()
+        break
+    }
+  } else {
+    switch(currAxis){
+      case BtnAxes.X:
+        minusX()
+        break
+      case BtnAxes.Y:
+        minusY()
+        break
+      case BtnAxes.Z:
+        minusZ()
+        break
+    }
   }
 }
 
@@ -236,16 +223,28 @@ onMounted(() => {
 
 
 <style scoped>
+span {
+  font-size: 20pt;
+}
 .coord {
   font-size: 30pt;
   width: 50px;
   height: 50px;
   margin: 10px;
 }
-input[type="range"] {
-  width: 450px;
-  margin-left: 10px;
-  margin-right: 10px;
-  margin-bottom: 20px;
+.sign {
+  font-size: 20pt;
+  width: 30px;
+  height: 30px;
+  margin: 10px;
+}
+.x {
+  color: red
+}
+.y {
+  color: greenyellow
+}
+.z {
+  color: blue
 }
 </style>
