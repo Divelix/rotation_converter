@@ -37,9 +37,9 @@
   <button class="coord" @click="setX">x</button>
   <button class="coord" @click="setY">y</button>
   <button class="coord" @click="setZ">z</button>
-  <p>{{ rotMat.elements[0].toFixed(2) }} {{ rotMat.elements[1].toFixed(2) }} {{ rotMat.elements[2].toFixed(2) }}</p>
-  <p>{{ rotMat.elements[4].toFixed(2) }} {{ rotMat.elements[5].toFixed(2) }} {{ rotMat.elements[6].toFixed(2) }}</p>
-  <p>{{ rotMat.elements[8].toFixed(2) }} {{ rotMat.elements[9].toFixed(2) }} {{ rotMat.elements[10].toFixed(2) }}</p>
+  <p>{{ rotFrame.matrix.elements[0].toFixed(2) }} {{ rotFrame.matrix.elements[1].toFixed(2) }} {{ rotFrame.matrix.elements[2].toFixed(2) }}</p>
+  <p>{{ rotFrame.matrix.elements[4].toFixed(2) }} {{ rotFrame.matrix.elements[5].toFixed(2) }} {{ rotFrame.matrix.elements[6].toFixed(2) }}</p>
+  <p>{{ rotFrame.matrix.elements[8].toFixed(2) }} {{ rotFrame.matrix.elements[9].toFixed(2) }} {{ rotFrame.matrix.elements[10].toFixed(2) }}</p>
 </template>
 
 
@@ -60,7 +60,6 @@ const refSliderX = ref<HTMLInputElement | null>(null)
 const refSliderY = ref<HTMLInputElement | null>(null)
 const refSliderZ = ref<HTMLInputElement | null>(null)
 const experience = ref<HTMLCanvasElement | null>(null)
-const rotMat = ref(new Matrix4().identity())
 const minAngle = ref(-3)
 const maxAngle = ref(3)
 
@@ -86,21 +85,21 @@ watch(sliderX, (newX) => {
   const rads = sliderAsAngleX.value
   const rm = new Matrix4().makeRotationX(rads)
   rotFrame.setRotationFromMatrix(rm)
-  rotMat.value = rotFrame.matrix
+  rotFrame.updateMatrix()
 })
 watch(sliderY, (newY) => {
   (refSliderY.value as unknown as HTMLInputElement).value = newY.toString()
   const rads = sliderAsAngleY.value
   const rm = new Matrix4().makeRotationY(rads)
   rotFrame.setRotationFromMatrix(rm)
-  rotMat.value = rotFrame.matrix
+  rotFrame.updateMatrix()
 })
 watch(sliderZ, (newZ) => {
   (refSliderZ.value as unknown as HTMLInputElement).value = newZ.toString()
   const rads = sliderAsAngleZ.value
   const rm = new Matrix4().makeRotationZ(rads)
   rotFrame.setRotationFromMatrix(rm)
-  rotMat.value = rotFrame.matrix
+  rotFrame.updateMatrix()
 })
 
 function onChangeSlider(axis: BtnAxes, event: Event) {
