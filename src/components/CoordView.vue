@@ -1,6 +1,7 @@
 <template>
   <canvas ref="experience"></canvas>
   <br>
+  <span style="color: red;">X</span>
   <input
     type="range"
     :min="minAngle"
@@ -11,6 +12,7 @@
   />
   <span>{{ sliderX }}</span>
   <br>
+  <span style="color: green;">Y</span>
   <input
     type="range"
     :min="minAngle"
@@ -21,6 +23,7 @@
   />
   <span>{{ sliderY }}</span>
   <br>
+  <span style="color: blue;">Z</span>
   <input
     type="range"
     :min="minAngle"
@@ -34,16 +37,14 @@
   <button class="coord" @click="setX">x</button>
   <button class="coord" @click="setY">y</button>
   <button class="coord" @click="setZ">z</button>
-  <p>
-    1 2 3 <br>
-    1 2 3 <br>
-    1 2 3 <br>
-  </p>
+  <p>{{ rotMat.elements[0].toFixed(2) }} {{ rotMat.elements[1].toFixed(2) }} {{ rotMat.elements[2].toFixed(2) }}</p>
+  <p>{{ rotMat.elements[4].toFixed(2) }} {{ rotMat.elements[5].toFixed(2) }} {{ rotMat.elements[6].toFixed(2) }}</p>
+  <p>{{ rotMat.elements[8].toFixed(2) }} {{ rotMat.elements[9].toFixed(2) }} {{ rotMat.elements[10].toFixed(2) }}</p>
 </template>
 
 
 <script setup lang="ts">
-import {BufferGeometry, CylinderGeometry, Group, Line, LineBasicMaterial, Mesh, MeshBasicMaterial, PerspectiveCamera, Scene, Vector3, WebGLRenderer} from 'three'
+import {BufferGeometry, CylinderGeometry, Group, Line, LineBasicMaterial, Matrix4, Mesh, MeshBasicMaterial, PerspectiveCamera, Scene, Vector3, WebGLRenderer} from 'three'
 import {computed, onMounted, ref, shallowRef, watch} from 'vue'
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 import { clamp } from 'three/src/math/MathUtils.js';
@@ -59,9 +60,9 @@ const refSliderX = ref<HTMLInputElement | null>(null)
 const refSliderY = ref<HTMLInputElement | null>(null)
 const refSliderZ = ref<HTMLInputElement | null>(null)
 const experience = ref<HTMLCanvasElement | null>(null)
+const rotMat = ref(new Matrix4().identity())
 const minAngle = ref(-3)
 const maxAngle = ref(3)
-const rotMat = ref()
 
 // Constants
 enum BtnAxes {X, Y, Z}
@@ -82,15 +83,24 @@ let currAxis: BtnAxes = BtnAxes.X
 // Methods
 watch(sliderX, (newX) => {
   (refSliderX.value as unknown as HTMLInputElement).value = newX.toString()
-  rotFrame.rotation.x = sliderAsAngleX.value
+  const rads = sliderAsAngleX.value
+  const rm = new Matrix4().makeRotationX(rads)
+  rotFrame.setRotationFromMatrix(rm)
+  rotMat.value = rotFrame.matrix
 })
 watch(sliderY, (newY) => {
   (refSliderY.value as unknown as HTMLInputElement).value = newY.toString()
-  rotFrame.rotation.y = sliderAsAngleY.value
+  const rads = sliderAsAngleY.value
+  const rm = new Matrix4().makeRotationY(rads)
+  rotFrame.setRotationFromMatrix(rm)
+  rotMat.value = rotFrame.matrix
 })
 watch(sliderZ, (newZ) => {
   (refSliderZ.value as unknown as HTMLInputElement).value = newZ.toString()
-  rotFrame.rotation.z = sliderAsAngleZ.value
+  const rads = sliderAsAngleZ.value
+  const rm = new Matrix4().makeRotationZ(rads)
+  rotFrame.setRotationFromMatrix(rm)
+  rotMat.value = rotFrame.matrix
 })
 
 function onChangeSlider(axis: BtnAxes, event: Event) {
@@ -223,19 +233,19 @@ onMounted(() => {
   experience.value?.addEventListener('wheel', handleScroll)
   loop()
 })
-
 </script>
 
 
 <style scoped>
 .coord {
-  font-size: 50pt;
-  width: 100px;
-  height: 100px;
+  font-size: 30pt;
+  width: 50px;
+  height: 50px;
   margin: 10px;
 }
 input[type="range"] {
   width: 450px;
+  margin-left: 10px;
   margin-right: 10px;
   margin-bottom: 20px;
 }
