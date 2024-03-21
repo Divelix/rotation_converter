@@ -15,9 +15,6 @@
   <span class="z">Z</span>
   <button class="sign" @click="plusZ">+</button>
   <br>
-  <button class="coord" @click="setX">x</button>
-  <button class="coord" @click="setY">y</button>
-  <button class="coord" @click="setZ">z</button>
   <p>{{ rotMat[0] }} {{ rotMat[1] }} {{ rotMat[2] }}</p>
   <p>{{ rotMat[4] }} {{ rotMat[5] }} {{ rotMat[6] }}</p>
   <p>{{ rotMat[8] }} {{ rotMat[9] }} {{ rotMat[10] }}</p>
@@ -90,43 +87,97 @@ const plusY = () => snapRotate(BtnAxes.Y, SNAP_SIZE)
 const minusZ = () => snapRotate(BtnAxes.Z, -SNAP_SIZE)
 const plusZ = () => snapRotate(BtnAxes.Z, SNAP_SIZE)
 
-function setX() {
+function resetRotation() {
+  rotFrame.setRotationFromMatrix(new Matrix4().identity())
+}
+
+function focusX() {
   currAxis = BtnAxes.X
 }
-function setY() {
+function focusY() {
   currAxis = BtnAxes.Y
 }
-function setZ() {
+function focusZ() {
   currAxis = BtnAxes.Z
+}
+
+function incCurrAxisRot() {
+  switch(currAxis){
+    case BtnAxes.X:
+      plusX()
+      break
+    case BtnAxes.Y:
+      plusY()
+      break
+    case BtnAxes.Z:
+      plusZ()
+      break
+  }
+}
+
+function decCurrAxisRot() {
+  switch(currAxis){
+    case BtnAxes.X:
+      minusX()
+      break
+    case BtnAxes.Y:
+      minusY()
+      break
+    case BtnAxes.Z:
+      minusZ()
+      break
+  }
 }
 
 function handleScroll(event: WheelEvent) {
   event.preventDefault()
   const isUp = event.deltaY > 0
   if (isUp) {
-    switch(currAxis){
-      case BtnAxes.X:
-        plusX()
-        break
-      case BtnAxes.Y:
-        plusY()
-        break
-      case BtnAxes.Z:
-        plusZ()
-        break
-    }
+    incCurrAxisRot()
   } else {
-    switch(currAxis){
-      case BtnAxes.X:
-        minusX()
-        break
-      case BtnAxes.Y:
-        minusY()
-        break
-      case BtnAxes.Z:
-        minusZ()
-        break
-    }
+    decCurrAxisRot()
+  }
+}
+
+function onKeydown(event: KeyboardEvent) {
+  event.preventDefault()
+  switch(event.code) {
+    case "KeyC":
+    case "KeyR":
+    case "Space":
+      resetRotation()
+      break
+    case "KeyX":
+    case "KeyS":
+    case "Digit1":
+      focusX()
+      break
+    case "KeyY":
+    case "KeyD":
+    case "Digit2":
+      focusY()
+      break
+    case "KeyZ":
+    case "KeyF":
+    case "Digit3":
+      focusZ()
+      break
+    case "ArrowUp":
+    case "ArrowRight":
+    case "KeyK":
+    case "KeyL":
+      incCurrAxisRot()
+      break
+    case "ArrowDown":
+    case "ArrowLeft":
+    case "KeyJ":
+    case "KeyH":
+      decCurrAxisRot()
+      break
+    case "KeyA":
+    case "KeyG":
+      isLocal.value = !isLocal.value
+      break
   }
 }
 
@@ -217,6 +268,7 @@ onMounted(() => {
   controls.enablePan = false
   controls.enableZoom = false
   experience.value?.addEventListener('wheel', handleScroll)
+  window.addEventListener("keydown", onKeydown)
   loop()
 })
 </script>
