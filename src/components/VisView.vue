@@ -1,6 +1,6 @@
 <template>
   <canvas ref="experience"></canvas>
-  <br>
+  <!-- <br>
   <input type="checkbox" v-model="isLocal"> <label>local</label>
   <br>
   <button class="sign" @click="minusX">-</button>
@@ -17,14 +17,34 @@
   <br>
   <p>{{ rotMat[0] }} {{ rotMat[1] }} {{ rotMat[2] }}</p>
   <p>{{ rotMat[4] }} {{ rotMat[5] }} {{ rotMat[6] }}</p>
-  <p>{{ rotMat[8] }} {{ rotMat[9] }} {{ rotMat[10] }}</p>
+  <p>{{ rotMat[8] }} {{ rotMat[9] }} {{ rotMat[10] }}</p> -->
 </template>
 
 
 <script setup lang="ts">
-import {BufferGeometry, CylinderGeometry, Group, Line, LineBasicMaterial, Matrix4, Mesh, MeshBasicMaterial, PerspectiveCamera, Scene, Vector3, WebGLRenderer} from 'three'
-import {onMounted, ref, shallowRef, watch} from 'vue'
+import { BufferGeometry, CylinderGeometry, Group, Line, LineBasicMaterial, Matrix4, Mesh, MeshBasicMaterial, PerspectiveCamera, Scene, Vector3, WebGLRenderer } from 'three'
+import { onMounted, ref, shallowRef, inject, watch, type Ref } from 'vue'
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
+
+const axisCounters: Ref<number[]> = inject("axisCounters")!
+
+watch(axisCounters, (newCounterValues) => {
+  if (newCounterValues[0] > 0) {
+    plusX()
+  } else if (newCounterValues[0] < 0) {
+    minusX()
+  }
+  if (newCounterValues[1] > 0) {
+    plusY()
+  } else if (newCounterValues[1] < 0) {
+    minusY()
+  }
+  if (newCounterValues[2] > 0) {
+    plusZ()
+  } else if (newCounterValues[2] < 0) {
+    minusZ()
+  }
+}, { deep: true })
 
 // Reactive stuff
 const isLocal = shallowRef(true)
@@ -32,10 +52,10 @@ const rotMat = ref<string[]>(new Matrix4().identity().elements.map(e => e.toFixe
 const experience = ref<HTMLCanvasElement | null>(null)
 
 // Constants
-enum BtnAxes {X, Y, Z}
+enum BtnAxes { X, Y, Z }
 const [W, H] = [500, 500]
-const CAM_POS = new Vector3(2,2,2)
-const CAM_LOOKAT = new Vector3(0,0,0)
+const CAM_POS = new Vector3(2, 2, 2)
+const CAM_LOOKAT = new Vector3(0, 0, 0)
 const AXIS_LEN = 2
 const CYL_RADIUS = 0.05
 const CYL_LENGTH = 1
@@ -51,7 +71,7 @@ let currAxis: BtnAxes = BtnAxes.X
 function snapRotate(axis: BtnAxes, rads: number) {
   currAxis = axis
   if (isLocal.value) {
-    switch(axis) {
+    switch (axis) {
       case BtnAxes.X:
         rotFrame.rotateX(rads)
         break
@@ -63,8 +83,8 @@ function snapRotate(axis: BtnAxes, rads: number) {
         break
     }
   } else {
-  const rm = new Matrix4()
-    switch(axis) {
+    const rm = new Matrix4()
+    switch (axis) {
       case BtnAxes.X:
         rm.makeRotationX(rads)
         break
@@ -102,7 +122,7 @@ function focusZ() {
 }
 
 function incCurrAxisRot() {
-  switch(currAxis){
+  switch (currAxis) {
     case BtnAxes.X:
       plusX()
       break
@@ -116,7 +136,7 @@ function incCurrAxisRot() {
 }
 
 function decCurrAxisRot() {
-  switch(currAxis){
+  switch (currAxis) {
     case BtnAxes.X:
       minusX()
       break
@@ -141,7 +161,7 @@ function handleScroll(event: WheelEvent) {
 
 function onKeydown(event: KeyboardEvent) {
   event.preventDefault()
-  switch(event.code) {
+  switch (event.code) {
     case "KeyC":
     case "KeyR":
     case "Space":
@@ -191,8 +211,8 @@ staticFrame.add(rotFrame)
 
 const camera = new PerspectiveCamera(
   45,
-  W / H, 
-  0.1, 
+  W / H,
+  0.1,
   1000
 )
 camera.position.x = CAM_POS.x
@@ -207,7 +227,7 @@ const xLine = new Line(
     new Vector3(0, 0, 0),
     new Vector3(AXIS_LEN, 0, 0),
   ]),
-  new LineBasicMaterial({color: 0xff0000})
+  new LineBasicMaterial({ color: 0xff0000 })
 )
 
 const yLine = new Line(
@@ -215,7 +235,7 @@ const yLine = new Line(
     new Vector3(0, 0, 0),
     new Vector3(0, 2, 0),
   ]),
-  new LineBasicMaterial({color: 0x00ff00})
+  new LineBasicMaterial({ color: 0x00ff00 })
 )
 
 const zLine = new Line(
@@ -223,7 +243,7 @@ const zLine = new Line(
     new Vector3(0, 0, 0),
     new Vector3(0, 0, 2),
   ]),
-  new LineBasicMaterial({color: 0x0000ff})
+  new LineBasicMaterial({ color: 0x0000ff })
 )
 staticFrame.add(xLine, yLine, zLine)
 scene.add(staticFrame)
@@ -231,21 +251,21 @@ scene.add(staticFrame)
 // Frame
 const xCyl = new Mesh(
   new CylinderGeometry(CYL_RADIUS, CYL_RADIUS, CYL_LENGTH, CYL_RESOLUTION),
-  new MeshBasicMaterial({color: 0xff0000})
+  new MeshBasicMaterial({ color: 0xff0000 })
 )
 xCyl.rotation.z = Math.PI / 2
 xCyl.position.x = CYL_LENGTH / 2
 
 const yCyl = new Mesh(
   new CylinderGeometry(CYL_RADIUS, CYL_RADIUS, CYL_LENGTH, CYL_RESOLUTION),
-  new MeshBasicMaterial({color: 0x00ff00})
+  new MeshBasicMaterial({ color: 0x00ff00 })
 )
 yCyl.rotation.x = 0
 yCyl.position.y = CYL_LENGTH / 2
 
 const zCyl = new Mesh(
   new CylinderGeometry(CYL_RADIUS, CYL_RADIUS, CYL_LENGTH, CYL_RESOLUTION),
-  new MeshBasicMaterial({color: 0x0000ff})
+  new MeshBasicMaterial({ color: 0x0000ff })
 )
 zCyl.rotation.x = Math.PI / 2
 zCyl.position.z = CYL_LENGTH / 2
@@ -258,8 +278,8 @@ const loop = () => {
 
 onMounted(() => {
   renderer = new WebGLRenderer({
-      canvas: experience.value as unknown as HTMLCanvasElement,
-      antialias: true,
+    canvas: experience.value as unknown as HTMLCanvasElement,
+    antialias: true,
   })
   renderer.setClearColor(0x282828)
   renderer.setSize(W, H)
@@ -278,24 +298,29 @@ onMounted(() => {
 span {
   font-size: 20pt;
 }
+
 .coord {
   font-size: 30pt;
   width: 50px;
   height: 50px;
   margin: 10px;
 }
+
 .sign {
   font-size: 20pt;
   width: 30px;
   height: 30px;
   margin: 10px;
 }
+
 .x {
   color: red
 }
+
 .y {
   color: greenyellow
 }
+
 .z {
   color: blue
 }

@@ -1,7 +1,9 @@
 <script setup lang="ts">
-// import HelloWorld from './components/HelloWorld.vue'
-// import TheWelcome from './components/TheWelcome.vue'
-import CoordView from './components/CoordView.vue'
+import VisView from './components/VisView.vue';
+import VisControls from './components/VisControls.vue'
+import { provide, ref } from 'vue';
+
+provide("axisCounters", ref([0, 0, 0]))
 </script>
 
 <template>
@@ -10,8 +12,9 @@ import CoordView from './components/CoordView.vue'
   </header>
 
   <main>
-    <div class="coord_view">
-      <CoordView/>
+    <div class="vis">
+      <VisView />
+      <VisControls />
     </div>
     <!-- <RotMat /> -->
   </main>
@@ -26,9 +29,9 @@ h1 {
   text-align: center;
 }
 
-.coord_view {
-  width: 100%;
-  text-align: center;
+.vis {
+  display: flex;
+  gap: 1em;
 }
 
 @media (min-width: 1024px) {
@@ -38,14 +41,10 @@ h1 {
     padding-right: calc(var(--section-gap) / 2);
   }
 
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
+  /* header .wrapper {
     display: flex;
     place-items: flex-start;
     flex-wrap: wrap;
-  }
+  } */
 }
 </style>
