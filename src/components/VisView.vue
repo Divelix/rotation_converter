@@ -1,20 +1,6 @@
 <template>
   <canvas ref="experience"></canvas>
   <!-- <br>
-  <input type="checkbox" v-model="isLocal"> <label>local</label>
-  <br>
-  <button class="sign" @click="minusX">-</button>
-  <span class="x">X</span>
-  <button class="sign" @click="plusX">+</button>
-  <br>
-  <button class="sign" @click="minusY">-</button>
-  <span class="y">Y</span>
-  <button class="sign" @click="plusY">+</button>
-  <br>
-  <button class="sign" @click="minusZ">-</button>
-  <span class="z">Z</span>
-  <button class="sign" @click="plusZ">+</button>
-  <br>
   <p>{{ rotMat[0] }} {{ rotMat[1] }} {{ rotMat[2] }}</p>
   <p>{{ rotMat[4] }} {{ rotMat[5] }} {{ rotMat[6] }}</p>
   <p>{{ rotMat[8] }} {{ rotMat[9] }} {{ rotMat[10] }}</p> -->
@@ -23,31 +9,13 @@
 
 <script setup lang="ts">
 import { BufferGeometry, CylinderGeometry, Group, Line, LineBasicMaterial, Matrix4, Mesh, MeshBasicMaterial, PerspectiveCamera, Scene, Vector3, WebGLRenderer } from 'three'
-import { onMounted, ref, shallowRef, inject, watch, type Ref } from 'vue'
+import { onMounted, ref, shallowRef, inject, watch, type Ref, type ShallowRef } from 'vue'
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 
-const axisCounters: Ref<number[]> = inject("axisCounters")!
-
-watch(axisCounters, (newCounterValues) => {
-  if (newCounterValues[0] > 0) {
-    plusX()
-  } else if (newCounterValues[0] < 0) {
-    minusX()
-  }
-  if (newCounterValues[1] > 0) {
-    plusY()
-  } else if (newCounterValues[1] < 0) {
-    minusY()
-  }
-  if (newCounterValues[2] > 0) {
-    plusZ()
-  } else if (newCounterValues[2] < 0) {
-    minusZ()
-  }
-}, { deep: true })
 
 // Reactive stuff
-const isLocal = shallowRef(true)
+const isLocal: ShallowRef<Boolean> = inject("isLocal")!
+const axisCounters: Ref<number[]> = inject("axisCounters")!
 const rotMat = ref<string[]>(new Matrix4().identity().elements.map(e => e.toFixed(2)))
 const experience = ref<HTMLCanvasElement | null>(null)
 
@@ -66,6 +34,25 @@ const SNAP_SIZE = Math.PI / 6
 let controls: OrbitControls
 let renderer: WebGLRenderer
 let currAxis: BtnAxes = BtnAxes.X
+
+// Watchers
+watch(axisCounters, (newCounterValues) => {
+  if (newCounterValues[0] > 0) {
+    plusX()
+  } else if (newCounterValues[0] < 0) {
+    minusX()
+  }
+  if (newCounterValues[1] > 0) {
+    plusY()
+  } else if (newCounterValues[1] < 0) {
+    minusY()
+  }
+  if (newCounterValues[2] > 0) {
+    plusZ()
+  } else if (newCounterValues[2] < 0) {
+    minusZ()
+  }
+}, { deep: true })
 
 // Methods
 function snapRotate(axis: BtnAxes, rads: number) {
@@ -106,6 +93,7 @@ const minusY = () => snapRotate(BtnAxes.Y, -SNAP_SIZE)
 const plusY = () => snapRotate(BtnAxes.Y, SNAP_SIZE)
 const minusZ = () => snapRotate(BtnAxes.Z, -SNAP_SIZE)
 const plusZ = () => snapRotate(BtnAxes.Z, SNAP_SIZE)
+
 
 function resetRotation() {
   rotFrame.setRotationFromMatrix(new Matrix4().identity())

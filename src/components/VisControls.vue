@@ -1,10 +1,18 @@
 <script setup lang="ts">
+import { inject } from 'vue';
 import CoordControl from './CoordControl.vue';
 
+const isLocal = inject("isLocal")!
 </script>
 
 <template>
     <div class="vis_controls">
+        <div class="tooltip">
+            <input type="checkbox" v-model="isLocal">
+            <span class="tooltiptext">
+                local/global rotation
+            </span>
+        </div>
         <CoordControl axis="x" />
         <CoordControl axis="y" />
         <CoordControl axis="z" />
@@ -17,5 +25,11 @@ import CoordControl from './CoordControl.vue';
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
+    align-items: center;
+}
+
+.vis_controls input[type="checkbox"] {
+    width: 30px;
+    height: 30px;
 }
 </style>

@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import VisView from './components/VisView.vue';
 import VisControls from './components/VisControls.vue'
-import { provide, ref } from 'vue';
+import { provide, ref, shallowRef } from 'vue';
 
 provide("axisCounters", ref([0, 0, 0]))
+provide("isLocal", shallowRef(true))
 </script>
 
 <template>
