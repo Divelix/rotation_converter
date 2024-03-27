@@ -1,14 +1,10 @@
 <template>
   <canvas ref="experience"></canvas>
-  <!-- <br>
-  <p>{{ rotMat[0] }} {{ rotMat[1] }} {{ rotMat[2] }}</p>
-  <p>{{ rotMat[4] }} {{ rotMat[5] }} {{ rotMat[6] }}</p>
-  <p>{{ rotMat[8] }} {{ rotMat[9] }} {{ rotMat[10] }}</p> -->
 </template>
 
 
 <script setup lang="ts">
-import { BufferGeometry, CylinderGeometry, Group, Line, LineBasicMaterial, Matrix4, Mesh, MeshBasicMaterial, PerspectiveCamera, Scene, Vector3, WebGLRenderer } from 'three'
+import { BufferGeometry, CylinderGeometry, Group, Line, LineBasicMaterial, Matrix3, Matrix4, Mesh, MeshBasicMaterial, PerspectiveCamera, Scene, Vector3, WebGLRenderer } from 'three'
 import { onMounted, ref, shallowRef, inject, watch, type Ref, type ShallowRef } from 'vue'
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 
@@ -16,7 +12,7 @@ import { OrbitControls } from 'three/examples/jsm/Addons.js';
 // Reactive stuff
 const isLocal: ShallowRef<Boolean> = inject("isLocal")!
 const axisCounters: Ref<number[]> = inject("axisCounters")!
-const rotMat = ref<string[]>(new Matrix4().identity().elements.map(e => e.toFixed(2)))
+const rotMat: Ref<number[]> = inject("rotMat")!
 const experience = ref<HTMLCanvasElement | null>(null)
 
 // Constants
@@ -85,7 +81,7 @@ function snapRotate(axis: BtnAxes, rads: number) {
     rotFrame.applyMatrix4(rm)
   }
   rotFrame.updateMatrix()
-  rotMat.value = rotFrame.matrix.elements.map(e => e.toFixed(2))
+  rotMat.value = new Matrix3().setFromMatrix4(rotFrame.matrix).elements
 }
 const minusX = () => snapRotate(BtnAxes.X, -SNAP_SIZE)
 const plusX = () => snapRotate(BtnAxes.X, SNAP_SIZE)
@@ -97,6 +93,8 @@ const plusZ = () => snapRotate(BtnAxes.Z, SNAP_SIZE)
 
 function resetRotation() {
   rotFrame.setRotationFromMatrix(new Matrix4().identity())
+  rotFrame.updateMatrix()
+  rotMat.value = new Matrix3().setFromMatrix4(rotFrame.matrix).elements
 }
 
 function focusX() {

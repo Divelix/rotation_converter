@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import VisView from './components/VisView.vue';
 import VisControls from './components/VisControls.vue'
+import RotMat from './components/RotMat.vue'
 import { provide, ref, shallowRef } from 'vue';
 
-provide("axisCounters", ref([0, 0, 0]))
 provide("isLocal", shallowRef(true))
+provide("axisCounters", ref([0, 0, 0]))
+provide("rotMat", ref(new Array(9).fill(0)))
 </script>
 
 <template>
@@ -17,7 +19,7 @@ provide("isLocal", shallowRef(true))
       <VisView />
       <VisControls />
     </div>
-    <!-- <RotMat /> -->
+    <RotMat />
   </main>
 </template>
 
