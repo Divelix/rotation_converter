@@ -80,8 +80,7 @@ function snapRotate(axis: BtnAxes, rads: number) {
     }
     rotFrame.applyMatrix4(rm)
   }
-  rotFrame.updateMatrix()
-  rotMat.value = new Matrix3().setFromMatrix4(rotFrame.matrix).elements
+  updateRot()
 }
 const minusX = () => snapRotate(BtnAxes.X, -SNAP_SIZE)
 const plusX = () => snapRotate(BtnAxes.X, SNAP_SIZE)
@@ -90,11 +89,22 @@ const plusY = () => snapRotate(BtnAxes.Y, SNAP_SIZE)
 const minusZ = () => snapRotate(BtnAxes.Z, -SNAP_SIZE)
 const plusZ = () => snapRotate(BtnAxes.Z, SNAP_SIZE)
 
+function resetCamera() {
+  camera.position.x = CAM_POS.x
+  camera.position.y = CAM_POS.y
+  camera.position.z = CAM_POS.z
+  camera.lookAt(CAM_LOOKAT)
+}
+
+function updateRot() {
+  rotFrame.updateMatrix()
+  rotMat.value = new Matrix3().setFromMatrix4(rotFrame.matrix).elements
+}
 
 function resetRotation() {
   rotFrame.setRotationFromMatrix(new Matrix4().identity())
-  rotFrame.updateMatrix()
-  rotMat.value = new Matrix3().setFromMatrix4(rotFrame.matrix).elements
+  updateRot()
+  resetCamera()
 }
 
 function focusX() {
@@ -201,10 +211,7 @@ const camera = new PerspectiveCamera(
   0.1,
   1000
 )
-camera.position.x = CAM_POS.x
-camera.position.y = CAM_POS.y
-camera.position.z = CAM_POS.z
-camera.lookAt(CAM_LOOKAT)
+resetCamera()
 scene.add(camera)
 
 // Axes
