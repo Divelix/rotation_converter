@@ -57,7 +57,7 @@ function copyMat() {
                     </td>
                 </tr>
             </table>
-            <ActionButton @click.prevent="copyMat">
+            <ActionButton @btn-click="copyMat" toast="Copied to clipboard">
                 <template #icon>
                     <IconCopy />
                 </template>
