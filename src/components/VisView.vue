@@ -6,7 +6,7 @@
 <script setup lang="ts">
 import { Axes } from '../types'
 import { BufferGeometry, CylinderGeometry, Group, Line, LineBasicMaterial, Matrix3, Matrix4, Mesh, MeshBasicMaterial, PerspectiveCamera, Scene, Vector3, WebGLRenderer } from 'three'
-import { onMounted, ref, shallowRef, inject, watch, type Ref, type ShallowRef } from 'vue'
+import { onMounted, ref, inject, watch, type Ref, type ShallowRef } from 'vue'
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 
 // Reactive stuff
@@ -193,6 +193,24 @@ function onKeydown(event: KeyboardEvent) {
     case "KeyG":
       isLocal.value = !isLocal.value
       break
+    case "ShiftLeft":
+      focusY()
+      break
+    case "ControlLeft":
+      focusZ()
+      break
+  }
+}
+
+function onKeyup(event: KeyboardEvent) {
+  event.preventDefault()
+  switch (event.code) {
+    case "ShiftLeft":
+      focusX()
+      break
+    case "ControlLeft":
+      focusX()
+      break
   }
 }
 
@@ -281,6 +299,7 @@ onMounted(() => {
   controls.enableZoom = false
   experience.value?.addEventListener('wheel', handleScroll)
   window.addEventListener("keydown", onKeydown)
+  window.addEventListener("keyup", onKeyup)
   loop()
 })
 </script>
