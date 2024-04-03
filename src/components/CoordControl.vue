@@ -1,11 +1,20 @@
 <script setup lang="ts">
-import { inject, type Ref } from 'vue';
+import { computed, inject, type Ref } from 'vue';
+import { Axes } from '../types'
 
 const props = defineProps({
     axis: String
 })
 
+const currAxis: Ref<Axes> = inject("currAxis")!
 const axisCounters: Ref<number[]> = inject("axisCounters")!
+const isActive = computed(() => {
+    // TODO: Figure out more elegant solution
+    const x = props.axis == "x" && currAxis.value == Axes.X
+    const y = props.axis == "y" && currAxis.value == Axes.Y
+    const z = props.axis == "z" && currAxis.value == Axes.Z
+    return x || y || z
+})
 const plus = () => {
     stepCounters(true)
 }
@@ -31,12 +40,12 @@ const stepCounters = (isUp: Boolean) => {
 </script>
 
 <template>
-    <div :class="axis">
+    <div class="axis_container" :class="[axis, { active: isActive }]">
         <button class="plus" @click="plus">+</button>
         <div class="label">
             <span>{{ axis?.toUpperCase() }}</span>
         </div>
-        <button class="minus" @click="minus">-</button>
+        <button class=" minus" @click="minus">-</button>
     </div>
 </template>
 
@@ -46,6 +55,14 @@ div {
     display: flex;
     flex-direction: column;
     text-align: center;
+}
+
+.axis_container {
+    opacity: 50%;
+}
+
+.active {
+    opacity: 100%;
 }
 
 button {

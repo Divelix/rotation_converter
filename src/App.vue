@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import VisView from './components/VisView.vue';
+import { provide, ref, shallowRef } from 'vue'
+import { Axes } from './types'
+import VisView from './components/VisView.vue'
 import VisControls from './components/VisControls.vue'
 import RotMat from './components/RotMat.vue'
-import { provide, ref, shallowRef } from 'vue';
 
 provide("isLocal", shallowRef(true))
 provide("axisCounters", ref([0, 0, 0]))
 provide("rotMat", ref(new Array(9).fill(0)))
+provide("currAxis", ref(Axes.X))
 </script>
 
 <template>
@@ -51,3 +53,4 @@ h1 {
   } */
 }
 </style>
+./types

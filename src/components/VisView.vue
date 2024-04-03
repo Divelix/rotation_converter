@@ -4,19 +4,19 @@
 
 
 <script setup lang="ts">
+import { Axes } from '../types'
 import { BufferGeometry, CylinderGeometry, Group, Line, LineBasicMaterial, Matrix3, Matrix4, Mesh, MeshBasicMaterial, PerspectiveCamera, Scene, Vector3, WebGLRenderer } from 'three'
 import { onMounted, ref, shallowRef, inject, watch, type Ref, type ShallowRef } from 'vue'
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
-
 
 // Reactive stuff
 const isLocal: ShallowRef<Boolean> = inject("isLocal")!
 const axisCounters: Ref<number[]> = inject("axisCounters")!
 const rotMat: Ref<number[]> = inject("rotMat")!
+const currAxis: Ref<Axes> = inject("currAxis")!
 const experience = ref<HTMLCanvasElement | null>(null)
 
 // Constants
-enum BtnAxes { X, Y, Z }
 const [W, H] = [500, 500]
 const CAM_POS = new Vector3(2, 2, 2)
 const CAM_LOOKAT = new Vector3(0, 0, 0)
@@ -29,7 +29,6 @@ const SNAP_SIZE = Math.PI / 6
 // Variables
 let controls: OrbitControls
 let renderer: WebGLRenderer
-let currAxis: BtnAxes = BtnAxes.X
 
 // Watchers
 watch(axisCounters, (newCounterValues) => {
@@ -51,30 +50,30 @@ watch(axisCounters, (newCounterValues) => {
 }, { deep: true })
 
 // Methods
-function snapRotate(axis: BtnAxes, rads: number) {
-  currAxis = axis
+function snapRotate(axis: Axes, rads: number) {
+  currAxis.value = axis
   if (isLocal.value) {
     switch (axis) {
-      case BtnAxes.X:
+      case Axes.X:
         rotFrame.rotateX(rads)
         break
-      case BtnAxes.Y:
+      case Axes.Y:
         rotFrame.rotateY(rads)
         break
-      case BtnAxes.Z:
+      case Axes.Z:
         rotFrame.rotateZ(rads)
         break
     }
   } else {
     const rm = new Matrix4()
     switch (axis) {
-      case BtnAxes.X:
+      case Axes.X:
         rm.makeRotationX(rads)
         break
-      case BtnAxes.Y:
+      case Axes.Y:
         rm.makeRotationY(rads)
         break
-      case BtnAxes.Z:
+      case Axes.Z:
         rm.makeRotationZ(rads)
         break
     }
@@ -82,12 +81,12 @@ function snapRotate(axis: BtnAxes, rads: number) {
   }
   updateRot()
 }
-const minusX = () => snapRotate(BtnAxes.X, -SNAP_SIZE)
-const plusX = () => snapRotate(BtnAxes.X, SNAP_SIZE)
-const minusY = () => snapRotate(BtnAxes.Y, -SNAP_SIZE)
-const plusY = () => snapRotate(BtnAxes.Y, SNAP_SIZE)
-const minusZ = () => snapRotate(BtnAxes.Z, -SNAP_SIZE)
-const plusZ = () => snapRotate(BtnAxes.Z, SNAP_SIZE)
+const minusX = () => snapRotate(Axes.X, -SNAP_SIZE)
+const plusX = () => snapRotate(Axes.X, SNAP_SIZE)
+const minusY = () => snapRotate(Axes.Y, -SNAP_SIZE)
+const plusY = () => snapRotate(Axes.Y, SNAP_SIZE)
+const minusZ = () => snapRotate(Axes.Z, -SNAP_SIZE)
+const plusZ = () => snapRotate(Axes.Z, SNAP_SIZE)
 
 function resetCamera() {
   camera.position.x = CAM_POS.x
@@ -108,38 +107,38 @@ function resetRotation() {
 }
 
 function focusX() {
-  currAxis = BtnAxes.X
+  currAxis.value = Axes.X
 }
 function focusY() {
-  currAxis = BtnAxes.Y
+  currAxis.value = Axes.Y
 }
 function focusZ() {
-  currAxis = BtnAxes.Z
+  currAxis.value = Axes.Z
 }
 
 function incCurrAxisRot() {
-  switch (currAxis) {
-    case BtnAxes.X:
+  switch (currAxis.value) {
+    case Axes.X:
       plusX()
       break
-    case BtnAxes.Y:
+    case Axes.Y:
       plusY()
       break
-    case BtnAxes.Z:
+    case Axes.Z:
       plusZ()
       break
   }
 }
 
 function decCurrAxisRot() {
-  switch (currAxis) {
-    case BtnAxes.X:
+  switch (currAxis.value) {
+    case Axes.X:
       minusX()
       break
-    case BtnAxes.Y:
+    case Axes.Y:
       minusY()
       break
-    case BtnAxes.Z:
+    case Axes.Z:
       minusZ()
       break
   }

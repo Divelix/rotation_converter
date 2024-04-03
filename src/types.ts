@@ -1,0 +1,1 @@
+export enum Axes { X, Y, Z }
