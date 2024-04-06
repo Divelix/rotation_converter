@@ -10,6 +10,7 @@ import { onMounted, ref, inject, watch, type Ref, type ShallowRef } from 'vue'
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 
 // Reactive stuff
+const isEdit: ShallowRef<Boolean> = inject("isEdit")!
 const isLocal: ShallowRef<Boolean> = inject("isLocal")!
 const axisCounters: Ref<number[]> = inject("axisCounters")!
 const rotMat: Ref<number[]> = inject("rotMat")!
@@ -145,6 +146,9 @@ function decCurrAxisRot() {
 }
 
 function handleScroll(event: WheelEvent) {
+  if (isEdit.value) {
+    return
+  }
   event.preventDefault()
   const isUp = event.deltaY > 0
   if (isUp) {
@@ -155,6 +159,9 @@ function handleScroll(event: WheelEvent) {
 }
 
 function onKeydown(event: KeyboardEvent) {
+  if (isEdit.value) {
+    return
+  }
   event.preventDefault()
   switch (event.code) {
     case "KeyC":

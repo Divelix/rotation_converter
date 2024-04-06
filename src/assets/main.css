@@ -7,6 +7,10 @@
   font-weight: normal;
 }
 
+*:focus {
+  outline: none;
+}
+
 a,
 .green {
   text-decoration: none;

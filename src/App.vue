@@ -6,6 +6,7 @@ import VisControls from './components/VisControls.vue'
 import RotMat from './components/RotMat.vue'
 
 provide("isLocal", shallowRef(true))
+provide("isEdit", shallowRef(false))
 provide("axisCounters", ref([0, 0, 0]))
 provide("rotMat", ref(new Array(9).fill(0)))
 provide("currAxis", ref(Axes.X))
