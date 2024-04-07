@@ -1,17 +1,18 @@
 <script setup lang="ts">
-import { computed, inject, shallowRef, watch, type Ref, type ShallowRef } from 'vue';
+import { computed, inject, nextTick, ref, shallowRef, watch, type Ref, type ShallowRef } from 'vue';
 import IconCopy from './icons/IconCopy.vue';
 import IconEdit from './icons/IconEdit.vue';
 import IconYes from './icons/IconYes.vue';
 import IconNo from './icons/IconNo.vue';
 import ActionButton from './ActionButton.vue';
+import { Matrix3 } from 'three';
 
 const isEdit: ShallowRef<Boolean> = inject("isEdit")!
-const rotMat: Ref<Array<number>> = inject("rotMat")!
+const rotMat: Ref<number[]> = inject("rotMat")!
 const isEditMat: ShallowRef<Boolean> = shallowRef(false)
-const displayPrecision = 3
-const copyPrecision = 5
-const smallNumber = 0.0000000001
+const matStr = shallowRef("")
+const textarea: Ref<HTMLTextAreaElement | null> = ref(null)
+
 const isPositiveArr = computed(() => {
     return rotMat.value.map(value => {
         return value >= -smallNumber
@@ -27,39 +28,73 @@ const closeToOneArr = computed(() => {
         return 1 - Math.abs(value) < smallNumber
     })
 })
-const matArrStr = computed(() => {
-    const numArr = rotMat.value
-    let result = '[\n';
-    for (let i = 0; i < numArr.length; i++) {
+
+const displayPrecision = 3
+const copyPrecision = 5
+const smallNumber = 0.0001
+
+const copyMat = () => navigator.clipboard.writeText(matStr.value)
+const openEdit = () => {
+    isEditMat.value = true
+
+}
+const closeEdit = () => isEditMat.value = false
+const parse9floats = (input: String): number[] | null => {
+    const regex: RegExp = /[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?/g;
+    const matches: RegExpMatchArray | null = input.match(regex);
+    if (!matches) return null
+    const nums = matches.map(match => parseFloat(match));
+    if (nums.length != 9) return null
+    return nums
+}
+
+const isOrthNorm = (nums: number[]): boolean => {
+    const mat = new Matrix3().fromArray(nums)
+    // Check if orthogonal
+    const productMat = mat.clone().multiply(mat.clone().transpose())
+    const isOrthogonal = Math.abs(productMat.determinant() - 1) < smallNumber
+
+    // Check if normal
+    const isNormal = Math.abs(mat.determinant() - 1) < smallNumber
+    return isOrthogonal && isNormal
+}
+
+function applyMat() {
+    const nums = parse9floats(matStr.value) // parse numbers from string
+    if (!nums) throw SyntaxError("Parse error: matrix format is incorrect")
+    const isRot = isOrthNorm(nums) // check if correct rotation matrix  
+    if (!isRot) throw SyntaxError("Rotation matrix MUST be orthonormal")
+    rotMat.value = nums
+    isEditMat.value = false
+}
+
+function updateMatStr(nums: number[]) {
+    matStr.value = '[\n';
+    for (let i = 0; i < nums.length; i++) {
         if (i % 3 === 0) {
             if (i !== 0) {
-                result += '],\n';
+                matStr.value += '],\n';
             }
-            result += '    [';
+            matStr.value += '    [';
         }
         if (i % 3 !== 0) {
-            result += ',';
+            matStr.value += ', ';
         }
-        result += numArr[i].toFixed(copyPrecision);
+        matStr.value += nums[i].toFixed(copyPrecision);
     }
-    result += ']\n]';
-    return result
-})
-
-function copyMat() {
-    navigator.clipboard.writeText(matArrStr.value)
-}
-const openEdit = () => isEditMat.value = true
-const closeEdit = () => isEditMat.value = false
-function applyMat() {
-    // TODO: parse numbers from string
-    // TODO: check if correct matrix  
-    // TODO: set to rotMat ref
-    // TODO: turn off EDIT mode
-}
+    matStr.value += ']\n]';
+ }
 
 watch(isEditMat, (newIsEditMat) => {
     isEdit.value = newIsEditMat
+    if (newIsEditMat) {
+        nextTick(() => {
+            textarea.value!.focus()
+        })
+    }
+})
+watch(rotMat, (newRotMat) => {
+    updateMatStr(newRotMat)
 })
 </script>
 
@@ -67,7 +102,7 @@ watch(isEditMat, (newIsEditMat) => {
     <div>
         <h2>Rotation Matrix</h2>
         <div class="content" v-if="isEditMat">
-            <textarea pattern="[0-9.,\[\]]+">{{ matArrStr }}</textarea>
+            <textarea ref="textarea" v-model="matStr" @focus="($event.target as HTMLTextAreaElement).select()"></textarea>
             <div class="action-buttons">
                 <ActionButton @btn-click="applyMat" toast="Apply new matrix">
                     <template #icon>

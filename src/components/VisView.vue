@@ -101,7 +101,14 @@ function updateRot() {
   rotMat.value = new Matrix3().setFromMatrix4(rotFrame.matrix).elements
 }
 
-function resetRotation() {
+watch(rotMat, (newRotArr) => {
+  // TODO: refactor to call this only on Edit Apply (now triggered on any rotation)
+  const mat3 = new Matrix3().fromArray(newRotArr)
+  const mat4 = new Matrix4().setFromMatrix3(mat3)
+  rotFrame.setRotationFromMatrix(mat4)
+})
+
+function reset() {
   rotFrame.setRotationFromMatrix(new Matrix4().identity())
   updateRot()
   resetCamera()
@@ -167,7 +174,7 @@ function onKeydown(event: KeyboardEvent) {
     case "KeyC":
     case "KeyR":
     case "Space":
-      resetRotation()
+      reset()
       break
     case "KeyX":
     case "KeyS":
@@ -307,6 +314,7 @@ onMounted(() => {
   experience.value?.addEventListener('wheel', handleScroll)
   window.addEventListener("keydown", onKeydown)
   window.addEventListener("keyup", onKeyup)
+  reset()
   loop()
 })
 </script>

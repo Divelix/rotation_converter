@@ -11,6 +11,10 @@
   outline: none;
 }
 
+::selection {
+  background-color: black;
+}
+
 a,
 .green {
   text-decoration: none;
