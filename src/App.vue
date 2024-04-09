@@ -22,36 +22,39 @@ provide("currAxis", ref(Axes.X))
       <VisView />
       <VisControls />
     </div>
-    <RotMat />
+    <div class="rot">
+      <RotMat />
+    </div>
   </main>
 </template>
 
 <style scoped>
 header {
-  line-height: 2.5;
+  text-align: center;
+  line-height: 3;
 }
 
-h1 {
-  text-align: center;
+main {
+  display: flex;
+  flex-direction: column;
+  gap: 1em
 }
 
 .vis {
   display: flex;
+  place-content: center;
   gap: 1em;
+}
+.rot {
+  display: flex;
+  place-content: center;
 }
 
 @media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
+  main {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
   }
-
-  /* header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  } */
 }
 </style>
-./types

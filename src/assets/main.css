@@ -3,7 +3,7 @@
 #app {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  /* padding: 2rem; */
   font-weight: normal;
 }
 
@@ -32,6 +32,7 @@ a,
 
 /* Tooltip text */
 .tooltip .tooltiptext {
+  line-height: 1.2;
   visibility: hidden;
   width: 120px;
   background-color: black;
@@ -56,15 +57,4 @@ a,
   }
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
-}
+@media (min-width: 1024px) {}

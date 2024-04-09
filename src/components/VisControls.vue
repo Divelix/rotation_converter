@@ -10,7 +10,7 @@ const isLocal = inject("isLocal")!
         <div class="tooltip">
             <input type="checkbox" v-model="isLocal">
             <span class="tooltiptext">
-                Rotation mod <br>
+                Rotation mod: <br>
                 on = local <br>
                 off = global
             </span>
