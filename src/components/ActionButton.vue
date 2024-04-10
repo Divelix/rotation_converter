@@ -52,12 +52,12 @@ button:active {
 /* Toast animation */
 .toast-enter-from {
     opacity: 0;
-    transform: translateY(60px);
+    transform: translate(-50%, 60px);
 }
 
 .toast-enter-to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate(-50%, 0);
 }
 
 .toast-enter-active {
@@ -66,12 +66,12 @@ button:active {
 
 .toast-leave-from {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate(-50%, 0);
 }
 
 .toast-leave-to {
     opacity: 0;
-    transform: translateY(60px);
+    transform: translate(-50%, 60px);
 }
 
 .toast-leave-active {

@@ -15,8 +15,9 @@ defineProps({
 <style scoped>
 .toast-wrapper {
     position: fixed;
-    width: 100%;
+    left: 50%;
     bottom: 20px;
+    transform: translate(-50%, 0);
 }
 
 .toast {

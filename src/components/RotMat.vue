@@ -34,10 +34,7 @@ const copyPrecision = 5
 const smallNumber = 0.0001
 
 const copyMat = () => navigator.clipboard.writeText(matStr.value)
-const openEdit = () => {
-    isEditMat.value = true
-
-}
+const openEdit = () => isEditMat.value = true
 const closeEdit = () => isEditMat.value = false
 const parse9floats = (input: String): number[] | null => {
     const regex: RegExp = /[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?/g;
