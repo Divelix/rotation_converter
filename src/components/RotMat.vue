@@ -6,10 +6,18 @@ import IconYes from './icons/IconYes.vue';
 import IconNo from './icons/IconNo.vue';
 import ActionButton from './ActionButton.vue';
 import { Matrix3 } from 'three';
+import { ToastType } from '@/types';
+
+const COPY_TEXT = "Copied matrix to clipboard"
+const PARSE_ERROR_TEXT = "Matrix parsing error"
+const ORTHO_ERROR_TEXT = "Matrix must be orthnormal"
 
 const isEdit: ShallowRef<Boolean> = inject("isEdit")!
-const rotMat: Ref<number[]> = inject("rotMat")!
+const toastMsg: ShallowRef<String> = inject("toastMsg")!
+const toastType: ShallowRef<ToastType> = inject("toastType")!
+const isError: ShallowRef<Boolean> = shallowRef(false)
 const isEditMat: ShallowRef<Boolean> = shallowRef(false)
+const rotMat: Ref<number[]> = inject("rotMat")!
 const matStr = shallowRef("")
 const textarea: Ref<HTMLTextAreaElement | null> = ref(null)
 
@@ -33,7 +41,11 @@ const displayPrecision = 3
 const copyPrecision = 5
 const smallNumber = 0.0001
 
-const copyMat = () => navigator.clipboard.writeText(matStr.value)
+const copyMat = () => {
+    navigator.clipboard.writeText(matStr.value)
+    toastMsg.value = COPY_TEXT
+    toastType.value = ToastType.INFO
+}
 const openEdit = () => isEditMat.value = true
 const closeEdit = () => isEditMat.value = false
 const parse9floats = (input: String): number[] | null => {
@@ -58,11 +70,25 @@ const isOrthNorm = (nums: number[]): boolean => {
 
 function applyMat() {
     const nums = parse9floats(matStr.value) // parse numbers from string
-    if (!nums) throw SyntaxError("Parse error: matrix format is incorrect")
-    const isRot = isOrthNorm(nums) // check if correct rotation matrix  
-    if (!isRot) throw SyntaxError("Rotation matrix MUST be orthonormal")
-    rotMat.value = nums
-    isEditMat.value = false
+    if (!nums) {
+        // throw SyntaxError("Parse error: matrix format is incorrect")
+        toastMsg.value = PARSE_ERROR_TEXT
+        toastType.value = ToastType.ERROR
+        isError.value = true
+    }
+    const isRot = isOrthNorm(nums!) // check if correct rotation matrix  
+    if (!isRot) {
+        // throw SyntaxError("Rotation matrix MUST be orthonormal")
+        toastMsg.value = ORTHO_ERROR_TEXT
+        toastType.value = ToastType.ERROR
+        isError.value = true
+    }
+    if (!isError.value) {
+        rotMat.value = nums!
+        isEditMat.value = false
+    } else {
+        setTimeout(() => isError.value = false, 1000)
+    }
 }
 
 function updateMatStr(nums: number[]) {
@@ -84,6 +110,7 @@ function updateMatStr(nums: number[]) {
 
 watch(isEditMat, (newIsEditMat) => {
     isEdit.value = newIsEditMat
+    updateMatStr(rotMat.value)
     if (newIsEditMat) {
         nextTick(() => {
             textarea.value!.focus()
@@ -99,14 +126,14 @@ watch(rotMat, (newRotMat) => {
     <div>
         <h2>Rotation Matrix</h2>
         <div class="content" v-if="isEditMat">
-            <textarea ref="textarea" v-model="matStr" @focus="($event.target as HTMLTextAreaElement).select()"></textarea>
+            <textarea ref="textarea" v-model="matStr" @focus="($event.target as HTMLTextAreaElement).select()" :class="{error: isError}"></textarea>
             <div class="action-buttons">
-                <ActionButton @btn-click="applyMat" toast="Apply new matrix">
+                <ActionButton @btn-click="applyMat">
                     <template #icon>
                         <IconYes />
                     </template>
                 </ActionButton>
-                <ActionButton @btn-click="closeEdit" toast="Close edit">
+                <ActionButton @btn-click="closeEdit">
                     <template #icon>
                         <IconNo />
                     </template>
@@ -125,12 +152,12 @@ watch(rotMat, (newRotMat) => {
                 </tr>
             </table>
             <div class="action-buttons">
-                <ActionButton @btn-click="copyMat" toast="Copied to clipboard">
+                <ActionButton @btn-click="copyMat">
                     <template #icon>
                         <IconCopy />
                     </template>
                 </ActionButton>
-                <ActionButton @btn-click="openEdit" toast="Edit">
+                <ActionButton @btn-click="openEdit">
                     <template #icon>
                         <IconEdit />
                     </template>
@@ -183,5 +210,8 @@ td {
     border: 1px solid #858585;
     padding: 8px;
     text-align: center;
+}
+.error {
+    border-color: red;
 }
 </style>

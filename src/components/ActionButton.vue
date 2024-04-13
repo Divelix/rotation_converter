@@ -1,13 +1,10 @@
 <script setup lang="ts">
-import { shallowRef } from 'vue';
+import { type ShallowRef, shallowRef, inject } from 'vue';
 import Toast from './Toast.vue'
 
-const props = defineProps({
-    toast: String
-})
 const emit = defineEmits(['btnClick'])
 const showToast = shallowRef(false)
-const TOAST_TIME_MS = 1000
+const TOAST_TIME_MS = 2000
 
 const triggerToast = () => {
     showToast.value = true
@@ -24,7 +21,7 @@ const handleClick = () => {
         <slot name="icon"></slot>
     </button>
     <transition name="toast">
-        <Toast v-if="showToast" :msg="props.toast" />
+        <Toast v-if="showToast"/>
     </transition>
 </template>
 

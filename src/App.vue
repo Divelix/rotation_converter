@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { provide, ref, shallowRef } from 'vue'
-import { Axes } from './types'
+import { Axes, ToastType } from './types'
 import VisView from './components/VisView.vue'
 import VisControls from './components/VisControls.vue'
 import RotMat from './components/RotMat.vue'
 
 provide("isLocal", shallowRef(true))
 provide("isEdit", shallowRef(false))
+provide("toastMsg", shallowRef("Toast default text"))
+provide("toastType", shallowRef(ToastType.INFO))
 provide("axisCounters", ref([0, 0, 0]))
 provide("rotMat", ref(new Array(9).fill(0)))
 provide("currAxis", ref(Axes.X))

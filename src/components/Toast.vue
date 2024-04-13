@@ -1,13 +1,16 @@
 <script setup lang="ts">
-defineProps({
-    msg: String
-})
+import { ToastType } from '@/types';
+import { computed, inject, type ShallowRef } from 'vue';
+
+const toastType: ShallowRef<ToastType> = inject("toastType")!
+const toastMsg: ShallowRef<String> = inject("toastMsg")!
+const isError = computed(() => toastType.value == ToastType.ERROR)
 </script>
 
 <template>
     <div class="toast-wrapper">
-        <div class="toast">
-            {{ msg }}
+        <div class="toast" :class="{ error: isError }">
+            {{ toastMsg }}
         </div>
     </div>
 </template>
@@ -21,12 +24,16 @@ defineProps({
 }
 
 .toast {
+    background-color: green;
     color: #fff;
-    background-color: #1e6b00;
     padding: 20px;
     border-radius: 20px;
     text-align: center;
     max-width: 400px;
     margin: 0 auto;
+}
+
+.error {
+    background-color: red;
 }
 </style>
