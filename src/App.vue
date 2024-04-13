@@ -7,6 +7,7 @@ import RotMat from './components/RotMat.vue'
 
 provide("isLocal", shallowRef(true))
 provide("isEdit", shallowRef(false))
+provide("needReset", shallowRef(false))
 provide("toastMsg", shallowRef("Toast default text"))
 provide("toastType", shallowRef(ToastType.INFO))
 provide("axisCounters", ref([0, 0, 0]))

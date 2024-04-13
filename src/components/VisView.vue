@@ -6,12 +6,13 @@
 <script setup lang="ts">
 import { Axes } from '../types'
 import { BufferGeometry, CylinderGeometry, Group, Line, LineBasicMaterial, Matrix3, Matrix4, Mesh, MeshBasicMaterial, PerspectiveCamera, Scene, Vector3, WebGLRenderer } from 'three'
-import { onMounted, ref, inject, watch, type Ref, type ShallowRef } from 'vue'
+import { onMounted, ref, inject, watch, type Ref, type ShallowRef, provide } from 'vue'
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 
 // Reactive stuff
 const isEdit: ShallowRef<Boolean> = inject("isEdit")!
 const isLocal: ShallowRef<Boolean> = inject("isLocal")!
+const needReset: ShallowRef<Boolean> = inject("needReset")!
 const axisCounters: Ref<number[]> = inject("axisCounters")!
 const rotMat: Ref<number[]> = inject("rotMat")!
 const currAxis: Ref<Axes> = inject("currAxis")!
@@ -49,6 +50,12 @@ watch(axisCounters, (newCounterValues) => {
     minusZ()
   }
 }, { deep: true })
+
+watch(needReset, (newReset) => {
+  if (!newReset) return
+  reset()
+  needReset.value = false
+})
 
 // Methods
 function snapRotate(axis: Axes, rads: number) {

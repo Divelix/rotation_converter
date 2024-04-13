@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { inject } from 'vue';
+import { inject, type ShallowRef } from 'vue';
+import IconReset from './icons/IconReset.vue';
 import CoordControl from './CoordControl.vue';
 
 const isLocal = inject("isLocal")!
+const needReset: ShallowRef<Boolean> = inject("needReset")!
 </script>
 
 <template>
@@ -18,6 +20,9 @@ const isLocal = inject("isLocal")!
         <CoordControl axis="x" />
         <CoordControl axis="y" />
         <CoordControl axis="z" />
+        <button class="reset" @click="needReset = true">
+            <IconReset />
+        </button>
     </div>
 </template>
 
@@ -33,5 +38,17 @@ const isLocal = inject("isLocal")!
 .vis_controls input[type="checkbox"] {
     width: 30px;
     height: 30px;
+}
+
+button {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    justify-content: center;
+    padding: 10px;
+    background-color: #282828;
+    border-radius: 20%;
+    border: 1px solid var(--c-divider-dark-1);
+    cursor: pointer;
 }
 </style>
