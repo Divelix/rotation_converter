@@ -6,17 +6,20 @@
 <script setup lang="ts">
 import { Axes } from '../types'
 import { BufferGeometry, CylinderGeometry, Group, Line, LineBasicMaterial, Matrix3, Matrix4, Mesh, MeshBasicMaterial, PerspectiveCamera, Scene, Vector3, WebGLRenderer } from 'three'
-import { onMounted, ref, inject, watch, type Ref, type ShallowRef, provide } from 'vue'
+import { onMounted, ref, inject, watch, type Ref, type ShallowRef, provide, computed, shallowRef } from 'vue'
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 
 // Reactive stuff
 const isEdit: ShallowRef<Boolean> = inject("isEdit")!
 const isLocal: ShallowRef<Boolean> = inject("isLocal")!
 const needReset: ShallowRef<Boolean> = inject("needReset")!
+const snapDenom: ShallowRef<number> = inject("snapDenom")!
+const isAlt: ShallowRef<Boolean> = inject("isAlt")!
 const axisCounters: Ref<number[]> = inject("axisCounters")!
 const rotMat: Ref<number[]> = inject("rotMat")!
 const currAxis: Ref<Axes> = inject("currAxis")!
 const experience = ref<HTMLCanvasElement | null>(null)
+const snapSize = computed(() => Math.PI / snapDenom.value)
 
 // Constants
 const [W, H] = [500, 500]
@@ -26,7 +29,6 @@ const AXIS_LEN = 2
 const CYL_RADIUS = 0.05
 const CYL_LENGTH = 1
 const CYL_RESOLUTION = 10
-const SNAP_SIZE = Math.PI / 6
 
 // Variables
 let controls: OrbitControls
@@ -89,12 +91,12 @@ function snapRotate(axis: Axes, rads: number) {
   }
   updateRot()
 }
-const minusX = () => snapRotate(Axes.X, -SNAP_SIZE)
-const plusX = () => snapRotate(Axes.X, SNAP_SIZE)
-const minusY = () => snapRotate(Axes.Y, -SNAP_SIZE)
-const plusY = () => snapRotate(Axes.Y, SNAP_SIZE)
-const minusZ = () => snapRotate(Axes.Z, -SNAP_SIZE)
-const plusZ = () => snapRotate(Axes.Z, SNAP_SIZE)
+const minusX = () => snapRotate(Axes.X, -snapSize.value)
+const plusX = () => snapRotate(Axes.X, snapSize.value)
+const minusY = () => snapRotate(Axes.Y, -snapSize.value)
+const plusY = () => snapRotate(Axes.Y, snapSize.value)
+const minusZ = () => snapRotate(Axes.Z, -snapSize.value)
+const plusZ = () => snapRotate(Axes.Z, snapSize.value)
 
 function resetCamera() {
   camera.position.x = CAM_POS.x
@@ -166,9 +168,17 @@ function handleScroll(event: WheelEvent) {
   event.preventDefault()
   const isUp = event.deltaY > 0
   if (isUp) {
-    incCurrAxisRot()
+    if (isAlt.value) {
+      snapDenom.value += snapDenom.value < 100 ? 1 : 0
+    } else {
+      incCurrAxisRot()
+    }
   } else {
-    decCurrAxisRot()
+    if (isAlt.value) {
+      snapDenom.value -= snapDenom.value > 1 ? 1 : 0
+    } else {
+      decCurrAxisRot()
+    }
   }
 }
 
@@ -178,6 +188,9 @@ function onKeydown(event: KeyboardEvent) {
   }
   event.preventDefault()
   switch (event.code) {
+    case "AltLeft":
+      isAlt.value = true
+      break
     case "KeyC":
     case "KeyR":
     case "Space":
@@ -226,6 +239,9 @@ function onKeydown(event: KeyboardEvent) {
 function onKeyup(event: KeyboardEvent) {
   event.preventDefault()
   switch (event.code) {
+    case "AltLeft":
+      isAlt.value = false
+      break
     case "ShiftLeft":
       focusX()
       break
