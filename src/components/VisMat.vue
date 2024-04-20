@@ -106,7 +106,7 @@ function updateMatStr(nums: number[]) {
         matStr.value += nums[i].toFixed(copyPrecision);
     }
     matStr.value += ']\n]';
- }
+}
 
 watch(isEditMat, (newIsEditMat) => {
     isEdit.value = newIsEditMat
@@ -123,10 +123,11 @@ watch(rotMat, (newRotMat) => {
 </script>
 
 <template>
-    <div>
+    <div class="rot">
         <h2>Rotation Matrix</h2>
         <div class="content" v-if="isEditMat">
-            <textarea ref="textarea" v-model="matStr" @focus="($event.target as HTMLTextAreaElement).select()" :class="{error: isError}"></textarea>
+            <textarea ref="textarea" v-model="matStr" @focus="($event.target as HTMLTextAreaElement).select()"
+                :class="{ error: isError }"></textarea>
             <div class="action-buttons">
                 <ActionButton @btn-click="applyMat">
                     <template #icon>
@@ -168,6 +169,12 @@ watch(rotMat, (newRotMat) => {
 </template>
 
 <style scoped>
+.rot {
+    display: flex;
+    flex-direction: column;
+    place-content: center;
+}
+
 .content {
     display: flex;
     gap: 5px;
@@ -211,6 +218,7 @@ td {
     padding: 8px;
     text-align: center;
 }
+
 .error {
     border-color: red;
 }

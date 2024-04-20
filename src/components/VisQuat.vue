@@ -123,7 +123,7 @@ watch(quat, (newQuat) => {
 </script>
 
 <template>
-    <div>
+    <div class="quat">
         <h2>Quaternion</h2>
         <div class="content" v-if="isEditQuat">
             <textarea ref="textarea" v-model="quatStr" @focus="($event.target as HTMLTextAreaElement).select()"
@@ -169,6 +169,12 @@ watch(quat, (newQuat) => {
 </template>
 
 <style scoped>
+.quat {
+    display: flex;
+    flex-direction: column;
+    place-content: center;
+}
+
 .content {
     display: flex;
     gap: 5px;

@@ -34,10 +34,8 @@ provide("snapDenom", shallowRef(6))
     <div class="snap">
       <Snap />
     </div>
-    <div class="rot">
+    <div class="repr">
       <VisMat />
-    </div>
-    <div class="quat">
       <VisQuat />
     </div>
   </main>
@@ -52,6 +50,8 @@ header {
 main {
   display: flex;
   flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
   gap: 1em
 }
 
@@ -68,14 +68,11 @@ main {
   gap: 0.5em;
 }
 
-.rot {
+.repr {
   display: flex;
-  place-content: center;
-}
-
-.quat {
-  display: flex;
-  place-content: center;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
 
 @media (min-width: 1024px) {
@@ -83,6 +80,13 @@ main {
     flex-direction: row;
     align-items: center;
     justify-content: space-evenly;
+  }
+
+  .repr {
+    width: auto;
+    flex-direction: column;
+    align-items: center;
+    gap: 3em;
   }
 }
 </style>
