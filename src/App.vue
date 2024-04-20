@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { provide, ref, shallowRef } from 'vue'
 import { Axes, ToastType } from './types'
-import VisView from './components/VisView.vue'
+import Vis3D from './components/Vis3D.vue'
 import VisControls from './components/VisControls.vue'
 import VisMat from './components/VisMat.vue'
 import VisQuat from './components/VisQuat.vue'
@@ -28,7 +28,7 @@ provide("snapDenom", shallowRef(6))
 
   <main>
     <div class="vis">
-      <VisView />
+      <Vis3D />
       <VisControls />
     </div>
     <div class="snap">
