@@ -4,6 +4,7 @@ import { Axes, ToastType } from './types'
 import VisView from './components/VisView.vue'
 import VisControls from './components/VisControls.vue'
 import RotMat from './components/RotMat.vue'
+import VisQuat from './components/VisQuat.vue'
 import Snap from './components/Snap.vue'
 
 provide("isLocal", shallowRef(true))
@@ -14,6 +15,7 @@ provide("toastMsg", shallowRef("Toast default text"))
 provide("toastType", shallowRef(ToastType.INFO))
 provide("axisCounters", ref([0, 0, 0]))
 provide("rotMat", ref(new Array(9).fill(0)))
+provide("quat", ref(new Array(4).fill(0)))
 provide("currAxis", ref(Axes.X))
 provide("snapDenom", shallowRef(6))
 
@@ -34,6 +36,9 @@ provide("snapDenom", shallowRef(6))
     </div>
     <div class="rot">
       <RotMat />
+    </div>
+    <div class="quat">
+      <VisQuat />
     </div>
   </main>
 </template>
@@ -64,6 +69,11 @@ main {
 }
 
 .rot {
+  display: flex;
+  place-content: center;
+}
+
+.quat {
   display: flex;
   place-content: center;
 }

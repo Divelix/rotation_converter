@@ -5,7 +5,7 @@
 
 <script setup lang="ts">
 import { Axes } from '../types'
-import { BufferGeometry, CylinderGeometry, Group, Line, LineBasicMaterial, Matrix3, Matrix4, Mesh, MeshBasicMaterial, PerspectiveCamera, Scene, Vector3, WebGLRenderer } from 'three'
+import { BufferGeometry, CylinderGeometry, Group, Line, LineBasicMaterial, Matrix3, Matrix4, Mesh, MeshBasicMaterial, PerspectiveCamera, Quaternion, Scene, Vector3, WebGLRenderer } from 'three'
 import { onMounted, ref, inject, watch, type Ref, type ShallowRef, provide, computed, shallowRef } from 'vue'
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 
@@ -17,6 +17,7 @@ const snapDenom: ShallowRef<number> = inject("snapDenom")!
 const isAlt: ShallowRef<Boolean> = inject("isAlt")!
 const axisCounters: Ref<number[]> = inject("axisCounters")!
 const rotMat: Ref<number[]> = inject("rotMat")!
+const quat: Ref<number[]> = inject("quat")!
 const currAxis: Ref<Axes> = inject("currAxis")!
 const experience = ref<HTMLCanvasElement | null>(null)
 const snapSize = computed(() => Math.PI / snapDenom.value)
@@ -108,6 +109,7 @@ function resetCamera() {
 function updateRot() {
   rotFrame.updateMatrix()
   rotMat.value = new Matrix3().setFromMatrix4(rotFrame.matrix).elements
+  quat.value = new Quaternion().setFromRotationMatrix(rotFrame.matrix).toArray()
 }
 
 watch(rotMat, (newRotArr) => {
@@ -171,13 +173,13 @@ function handleScroll(event: WheelEvent) {
     if (isAlt.value) {
       snapDenom.value += snapDenom.value < 100 ? 1 : 0
     } else {
-      incCurrAxisRot()
+      decCurrAxisRot()
     }
   } else {
     if (isAlt.value) {
       snapDenom.value -= snapDenom.value > 1 ? 1 : 0
     } else {
-      decCurrAxisRot()
+      incCurrAxisRot()
     }
   }
 }
