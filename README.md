@@ -1,40 +1,19 @@
-# rotation_converter
+# Rotation Converter
 
-This template should help get you started developing with Vue 3 in Vite.
+Rotation converter is a web page that allows to easily adjust rotation in 3D view and set/get rotation in various mathematical representations.
 
-## Recommended IDE Setup
+## Tech stack
+- Vue 3 Composition API
+- TypeScript
+- Vite
+- Bun
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Type Support for `.vue` Imports in TS
-
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
-
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
-
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
+## Contribution
+### How to run
+1. Install VSCode
+1. Install VSCode Extentions:
+    - ms-azuretools.vscode-docker
+    - ms-vscode-remote.remote-containers
+    - Vue.volar
+1. `Ctrl+Shift+P` -> `Reopen in container`
+1. `bun run dev` (inside devcontainer terminal)

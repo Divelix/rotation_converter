@@ -3,7 +3,7 @@ import { provide, ref, shallowRef } from 'vue'
 import { Axes, ToastType } from './types'
 import VisView from './components/VisView.vue'
 import VisControls from './components/VisControls.vue'
-import RotMat from './components/RotMat.vue'
+import VisMat from './components/VisMat.vue'
 import VisQuat from './components/VisQuat.vue'
 import Snap from './components/Snap.vue'
 
@@ -35,7 +35,7 @@ provide("snapDenom", shallowRef(6))
       <Snap />
     </div>
     <div class="rot">
-      <RotMat />
+      <VisMat />
     </div>
     <div class="quat">
       <VisQuat />
