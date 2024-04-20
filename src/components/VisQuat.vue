@@ -151,6 +151,12 @@ watch(quat, (newQuat) => {
                         </div>
                     </td>
                 </tr>
+                <tr>
+                    <td>X</td>
+                    <td>Y</td>
+                    <td>Z</td>
+                    <td>W</td>
+                </tr>
             </table>
             <div class="action-buttons">
                 <ActionButton @btn-click="copyQuat">

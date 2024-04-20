@@ -109,7 +109,7 @@ function resetCamera() {
 function updateRot() {
   rotFrame.updateMatrix()
   rotMat.value = new Matrix3().setFromMatrix4(rotFrame.matrix).elements
-  quat.value = new Quaternion().setFromRotationMatrix(rotFrame.matrix).toArray()
+  quat.value = rotFrame.quaternion.toArray()
 }
 
 watch(rotMat, (newRotArr) => {
@@ -163,6 +163,14 @@ function decCurrAxisRot() {
   }
 }
 
+function incSnapDenom() {
+  snapDenom.value += snapDenom.value < 100 ? 1 : 0
+}
+
+function decSnapDenom() {
+  snapDenom.value -= snapDenom.value > 1 ? 1 : 0
+}
+
 function handleScroll(event: WheelEvent) {
   if (isEdit.value) {
     return
@@ -171,13 +179,13 @@ function handleScroll(event: WheelEvent) {
   const isUp = event.deltaY > 0
   if (isUp) {
     if (isAlt.value) {
-      snapDenom.value += snapDenom.value < 100 ? 1 : 0
+      incSnapDenom()
     } else {
       decCurrAxisRot()
     }
   } else {
     if (isAlt.value) {
-      snapDenom.value -= snapDenom.value > 1 ? 1 : 0
+      decSnapDenom()
     } else {
       incCurrAxisRot()
     }
@@ -214,15 +222,19 @@ function onKeydown(event: KeyboardEvent) {
       focusZ()
       break
     case "ArrowUp":
-    case "ArrowRight":
     case "KeyK":
-    case "KeyL":
-      incCurrAxisRot()
+      incSnapDenom()
       break
     case "ArrowDown":
-    case "ArrowLeft":
     case "KeyJ":
+      decSnapDenom()
+      break
+    case "ArrowLeft":
     case "KeyH":
+      incCurrAxisRot()
+      break
+    case "ArrowRight":
+    case "KeyL":
       decCurrAxisRot()
       break
     case "KeyA":
