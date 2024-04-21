@@ -7,6 +7,7 @@ import IconNo from './icons/IconNo.vue';
 import ActionButton from './ActionButton.vue';
 import { Matrix3 } from 'three';
 import { ToastType } from '@/types';
+import * as Constants from '@/const';
 
 const COPY_TEXT = "Copied matrix to clipboard"
 const PARSE_ERROR_TEXT = "Matrix parsing error"
@@ -23,7 +24,7 @@ const textarea: Ref<HTMLTextAreaElement | null> = ref(null)
 
 const isPositiveArr = computed(() => {
     return rotMat.value.map(value => {
-        return value >= -smallNumber
+        return value >= -Constants.SMALL_NUMBER
     })
 })
 const absArr = computed(() => {
@@ -33,13 +34,9 @@ const absArr = computed(() => {
 })
 const closeToOneArr = computed(() => {
     return rotMat.value.map(value => {
-        return 1 - Math.abs(value) < smallNumber
+        return 1 - Math.abs(value) < Constants.SMALL_NUMBER
     })
 })
-
-const displayPrecision = 3
-const copyPrecision = 5
-const smallNumber = 0.0001
 
 const copyMat = () => {
     navigator.clipboard.writeText(matStr.value)
@@ -61,10 +58,10 @@ const isOrthNorm = (nums: number[]): boolean => {
     const mat = new Matrix3().fromArray(nums)
     // Check if orthogonal
     const productMat = mat.clone().multiply(mat.clone().transpose())
-    const isOrthogonal = Math.abs(productMat.determinant() - 1) < smallNumber
+    const isOrthogonal = Math.abs(productMat.determinant() - 1) < Constants.SMALL_NUMBER
 
     // Check if normal
-    const isNormal = Math.abs(mat.determinant() - 1) < smallNumber
+    const isNormal = Math.abs(mat.determinant() - 1) < Constants.SMALL_NUMBER
     return isOrthogonal && isNormal
 }
 
@@ -98,12 +95,12 @@ function updateMatStr(nums: number[]) {
             if (i !== 0) {
                 matStr.value += '],\n';
             }
-            matStr.value += '    [';
+            matStr.value += '  [';
         }
         if (i % 3 !== 0) {
             matStr.value += ', ';
         }
-        matStr.value += nums[i].toFixed(copyPrecision);
+        matStr.value += nums[i].toFixed(Constants.COPY_PRECISION);
     }
     matStr.value += ']\n]';
 }
@@ -147,7 +144,7 @@ watch(rotMat, (newRotMat) => {
                     <td v-for="(col, colIndex) in [0, 1, 2]" :key="colIndex">
                         <div :class="{ one: closeToOneArr[rowIndex * 3 + colIndex] }">
                             <span :class="{ invisible: isPositiveArr[rowIndex * 3 + colIndex] }">-</span>
-                            {{ absArr[rowIndex * 3 + colIndex].toFixed(displayPrecision) }}
+                            {{ absArr[rowIndex * 3 + colIndex].toFixed(Constants.DISPLAY_PRECISION) }}
                         </div>
                     </td>
                 </tr>

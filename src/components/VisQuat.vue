@@ -5,12 +5,13 @@ import IconEdit from './icons/IconEdit.vue';
 import IconYes from './icons/IconYes.vue';
 import IconNo from './icons/IconNo.vue';
 import ActionButton from './ActionButton.vue';
-import { Matrix3 } from 'three';
+import { Quaternion } from 'three';
 import { ToastType } from '@/types';
+import * as Constants from '@/const';
 
 const COPY_TEXT = "Copied quaternion to clipboard"
 const PARSE_ERROR_TEXT = "Quaternion parsing error"
-const ORTHO_ERROR_TEXT = "Quaternion must be orthnormal"
+const NORM_ERROR_TEXT = "Quaternion must be normalized"
 
 const isEdit: ShallowRef<Boolean> = inject("isEdit")!
 const toastMsg: ShallowRef<String> = inject("toastMsg")!
@@ -23,7 +24,7 @@ const textarea: Ref<HTMLTextAreaElement | null> = ref(null)
 
 const isPositiveArr = computed(() => {
     return quat.value.map(value => {
-        return value >= -smallNumber
+        return value >= -Constants.SMALL_NUMBER
     })
 })
 const absArr = computed(() => {
@@ -33,13 +34,9 @@ const absArr = computed(() => {
 })
 const closeToOneArr = computed(() => {
     return quat.value.map(value => {
-        return 1 - Math.abs(value) < smallNumber
+        return 1 - Math.abs(value) < Constants.SMALL_NUMBER
     })
 })
-
-const displayPrecision = 3
-const copyPrecision = 5
-const smallNumber = 0.0001
 
 const copyQuat = () => {
     navigator.clipboard.writeText(quatStr.value)
@@ -57,15 +54,9 @@ const parse4floats = (input: String): number[] | null => {
     return nums
 }
 
-const isOrthNorm = (nums: number[]): boolean => {
-    const mat = new Matrix3().fromArray(nums)
-    // Check if orthogonal
-    const productMat = mat.clone().multiply(mat.clone().transpose())
-    const isOrthogonal = Math.abs(productMat.determinant() - 1) < smallNumber
-
-    // Check if normal
-    const isNormal = Math.abs(mat.determinant() - 1) < smallNumber
-    return isOrthogonal && isNormal
+const isNormalized = (nums: number[]): boolean => {
+    const quat = new Quaternion().fromArray(nums)
+    return Math.abs(quat.lengthSq() - 1) < Constants.SMALL_NUMBER
 }
 
 function applyQuat() {
@@ -76,10 +67,10 @@ function applyQuat() {
         toastType.value = ToastType.ERROR
         isError.value = true
     }
-    const isRot = isOrthNorm(nums!) // check if correct rotation matrix  
-    if (!isRot) {
+    const isNorm = isNormalized(nums!) // check if correct rotation matrix  
+    if (!isNorm) {
         // throw SyntaxError("Rotation matrix MUST be orthonormal")
-        toastMsg.value = ORTHO_ERROR_TEXT
+        toastMsg.value = NORM_ERROR_TEXT
         toastType.value = ToastType.ERROR
         isError.value = true
     }
@@ -94,18 +85,13 @@ function applyQuat() {
 function updateQuatStr(nums: number[]) {
     quatStr.value = '[\n';
     for (let i = 0; i < nums.length; i++) {
-        if (i % 3 === 0) {
-            if (i !== 0) {
-                quatStr.value += '],\n';
-            }
-            quatStr.value += '    [';
+        if (i % 4 !== 0) {
+            quatStr.value += ',\n';
         }
-        if (i % 3 !== 0) {
-            quatStr.value += ', ';
-        }
-        quatStr.value += nums[i].toFixed(copyPrecision);
+        quatStr.value += "  "
+        quatStr.value += nums[i].toFixed(Constants.COPY_PRECISION);
     }
-    quatStr.value += ']\n]';
+    quatStr.value += '\n]';
 }
 
 watch(isEditQuat, (newIsEditQuat) => {
@@ -147,7 +133,7 @@ watch(quat, (newQuat) => {
                     <td v-for="(col, colIndex) in [0, 1, 2, 3]" :key="colIndex">
                         <div :class="{ one: closeToOneArr[colIndex] }">
                             <span :class="{ invisible: isPositiveArr[colIndex] }">-</span>
-                            {{ absArr[colIndex].toFixed(displayPrecision) }}
+                            {{ absArr[colIndex].toFixed(Constants.DISPLAY_PRECISION) }}
                         </div>
                     </td>
                 </tr>
@@ -196,7 +182,7 @@ textarea {
     border-color: #414141;
     border-radius: 10px;
     color: white;
-    width: 300px;
+    width: 200px;
     height: 100px;
 }
 
