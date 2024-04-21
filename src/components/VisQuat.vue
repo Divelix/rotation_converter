@@ -16,12 +16,12 @@ const NORM_ERROR_TEXT = "Quaternion must be normalized"
 const isEdit: ShallowRef<Boolean> = inject("isEdit")!
 const toastMsg: ShallowRef<String> = inject("toastMsg")!
 const toastType: ShallowRef<ToastType> = inject("toastType")!
+const isQuatApply: ShallowRef<Boolean> = inject("isQuatApply")!
 const quat: Ref<number[]> = inject("quat")!
 const isError: ShallowRef<Boolean> = shallowRef(false)
 const isEditQuat: ShallowRef<Boolean> = shallowRef(false)
 const quatStr = shallowRef("")
 const textarea: Ref<HTMLTextAreaElement | null> = ref(null)
-const quatAxes = ["x", "y", "z", "w"]
 
 const isPositiveArr = computed(() => {
     return quat.value.map(value => {
@@ -78,6 +78,7 @@ function applyQuat() {
     if (!isError.value) {
         quat.value = nums!
         isEditQuat.value = false
+        isQuatApply.value = true
     } else {
         setTimeout(() => isError.value = false, 1000)
     }

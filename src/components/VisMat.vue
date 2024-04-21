@@ -18,6 +18,7 @@ const toastMsg: ShallowRef<String> = inject("toastMsg")!
 const toastType: ShallowRef<ToastType> = inject("toastType")!
 const isError: ShallowRef<Boolean> = shallowRef(false)
 const isEditMat: ShallowRef<Boolean> = shallowRef(false)
+const isMatApply: ShallowRef<Boolean> = inject("isMatApply")!
 const rotMat: Ref<number[]> = inject("rotMat")!
 const matStr = shallowRef("")
 const textarea: Ref<HTMLTextAreaElement | null> = ref(null)
@@ -83,6 +84,7 @@ function applyMat() {
     if (!isError.value) {
         rotMat.value = nums!
         isEditMat.value = false
+        isMatApply.value = true
     } else {
         setTimeout(() => isError.value = false, 1000)
     }

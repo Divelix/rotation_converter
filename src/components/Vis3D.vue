@@ -15,6 +15,8 @@ const isLocal: ShallowRef<Boolean> = inject("isLocal")!
 const needReset: ShallowRef<Boolean> = inject("needReset")!
 const snapDenom: ShallowRef<number> = inject("snapDenom")!
 const isAlt: ShallowRef<Boolean> = inject("isAlt")!
+const isMatApply: ShallowRef<Boolean> = inject("isMatApply")!
+const isQuatApply: ShallowRef<Boolean> = inject("isQuatApply")!
 const axisCounters: Ref<number[]> = inject("axisCounters")!
 const rotMat: Ref<number[]> = inject("rotMat")!
 const quat: Ref<number[]> = inject("quat")!
@@ -112,11 +114,20 @@ function updateRot() {
   quat.value = rotFrame.quaternion.toArray()
 }
 
-watch(rotMat, (newRotArr) => {
-  // TODO: refactor to call this only on Edit Apply (now triggered on any rotation)
-  const mat3 = new Matrix3().fromArray(newRotArr)
+watch(isMatApply, (newMatApply) => {
+  if (!newMatApply) return
+  const mat3 = new Matrix3().fromArray(rotMat.value)
   const mat4 = new Matrix4().setFromMatrix3(mat3)
   rotFrame.setRotationFromMatrix(mat4)
+  updateRot()
+  isMatApply.value = false
+})
+
+watch(isQuatApply, (newQuatApply) => {
+  if (!newQuatApply) return
+  rotFrame.setRotationFromQuaternion(new Quaternion().fromArray(quat.value))
+  updateRot()
+  isQuatApply.value = false
 })
 
 function reset() {
