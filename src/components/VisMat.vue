@@ -170,11 +170,13 @@ watch(rotMat, (newRotMat) => {
     display: flex;
     flex-direction: column;
     place-content: center;
+    align-items: center;
 }
 
 .content {
     display: flex;
-    gap: 5px;
+    align-items: center;
+    gap: 1em;
 }
 
 table {
@@ -211,7 +213,7 @@ table {
 }
 
 td {
-    border: 1px solid #858585;
+    /* border: 1px solid #858585; */
     padding: 8px;
     text-align: center;
 }

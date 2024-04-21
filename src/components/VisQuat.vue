@@ -16,11 +16,12 @@ const NORM_ERROR_TEXT = "Quaternion must be normalized"
 const isEdit: ShallowRef<Boolean> = inject("isEdit")!
 const toastMsg: ShallowRef<String> = inject("toastMsg")!
 const toastType: ShallowRef<ToastType> = inject("toastType")!
+const quat: Ref<number[]> = inject("quat")!
 const isError: ShallowRef<Boolean> = shallowRef(false)
 const isEditQuat: ShallowRef<Boolean> = shallowRef(false)
-const quat: Ref<number[]> = inject("quat")!
 const quatStr = shallowRef("")
 const textarea: Ref<HTMLTextAreaElement | null> = ref(null)
+const quatAxes = ["x", "y", "z", "w"]
 
 const isPositiveArr = computed(() => {
     return quat.value.map(value => {
@@ -128,22 +129,15 @@ watch(quat, (newQuat) => {
             </div>
         </div>
         <div class="content" v-else>
-            <table>
-                <tr>
-                    <td v-for="(col, colIndex) in [0, 1, 2, 3]" :key="colIndex">
-                        <div :class="{ one: closeToOneArr[colIndex] }">
-                            <span :class="{ invisible: isPositiveArr[colIndex] }">-</span>
-                            {{ absArr[colIndex].toFixed(Constants.DISPLAY_PRECISION) }}
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>X</td>
-                    <td>Y</td>
-                    <td>Z</td>
-                    <td>W</td>
-                </tr>
-            </table>
+            <div class="quat-grid">
+                <div v-for="(axis, i) in ['x', 'y', 'z', 'w']" :key="i" :class="axis">
+                    <div class="axis-value" :class="{ one: closeToOneArr[i] }">
+                        <span :class="{ invisible: isPositiveArr[i] }">-</span>
+                        {{ absArr[i].toFixed(Constants.DISPLAY_PRECISION) }}
+                    </div>
+                    <div class="axis-label">{{ axis.toUpperCase() }}</div>
+                </div>
+            </div>
             <div class="action-buttons">
                 <ActionButton @btn-click="copyQuat">
                     <template #icon>
@@ -165,6 +159,43 @@ watch(quat, (newQuat) => {
     display: flex;
     flex-direction: column;
     place-content: center;
+    align-items: center;
+}
+
+.content {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+.quat-grid {
+    display: flex;
+}
+
+.axis-value {
+    padding: 10px;
+}
+
+.axis-label {
+    border-radius: 0 0 30px 30px;
+    text-align: center;
+    padding: 5px;
+}
+
+.x .axis-label {
+    background-color: var(--c-bg-quat-x);
+}
+
+.y .axis-label {
+    background-color: var(--c-bg-quat-y);
+}
+
+.z .axis-label {
+    background-color: var(--c-bg-quat-z);
+}
+
+.w .axis-label {
+    background-color: var(--c-bg-quat-w);
 }
 
 .content {
