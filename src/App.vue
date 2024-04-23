@@ -5,7 +5,6 @@ import Vis3D from './components/Vis3D.vue'
 import VisControls from './components/VisControls.vue'
 import VisMat from './components/VisMat.vue'
 import VisQuat from './components/VisQuat.vue'
-import Snap from './components/Snap.vue'
 
 provide("isLocal", shallowRef(true))
 provide("isEdit", shallowRef(false))
@@ -32,9 +31,6 @@ provide("snapDenom", shallowRef(6))
     <div class="vis">
       <Vis3D />
       <VisControls />
-    </div>
-    <div class="snap">
-      <Snap />
     </div>
     <div class="repr">
       <VisMat />

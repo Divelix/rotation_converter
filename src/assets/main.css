@@ -8,6 +8,14 @@
   font-weight: normal;
 }
 
+h1 {
+  user-select: none;
+}
+
+h2 {
+  user-select: none;
+}
+
 *:focus {
   outline: none;
 }

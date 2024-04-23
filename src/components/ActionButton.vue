@@ -21,7 +21,7 @@ const handleClick = () => {
         <slot name="icon"></slot>
     </button>
     <transition name="toast">
-        <Toast v-if="showToast"/>
+        <Toast v-if="showToast" />
     </transition>
 </template>
 
@@ -32,18 +32,18 @@ button {
     text-align: center;
     justify-content: center;
     padding: 10px;
-    background-color: #282828;
     border-radius: 20%;
-    border: 1px solid var(--c-divider-dark-1);
     cursor: pointer;
+    border: 1px solid var(--c-divider-dark-1);
+    background-color: var(--c-bg-btn);
 }
 
 button:hover {
-    background-color: #333;
+    background-color: var(--c-bg-btn-hover);
 }
 
 button:active {
-    background-color: #555;
+    background-color: var(--c-bg-btn-active);
 }
 
 /* Toast animation */

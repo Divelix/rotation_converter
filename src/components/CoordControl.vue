@@ -45,7 +45,7 @@ const stepCounters = (isUp: Boolean) => {
         <div class="label">
             <span>{{ axis?.toUpperCase() }}</span>
         </div>
-        <button class=" minus" @click="minus">-</button>
+        <button class="minus" @click="minus">-</button>
     </div>
 </template>
 

@@ -1,13 +1,66 @@
 <template>
-  <canvas ref="experience"></canvas>
+  <div class="container">
+    <canvas ref="experience"></canvas>
+    <div class="snap">
+      <Snap />
+    </div>
+  </div>
 </template>
+
+<style scoped>
+.container {
+  position: relative;
+}
+
+.snap {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  place-content: center;
+  align-items: center;
+  gap: 0.5em;
+}
+
+span {
+  font-size: 20pt;
+}
+
+.coord {
+  font-size: 30pt;
+  width: 50px;
+  height: 50px;
+  margin: 10px;
+}
+
+.sign {
+  font-size: 20pt;
+  width: 30px;
+  height: 30px;
+  margin: 10px;
+}
+
+.x {
+  color: red
+}
+
+.y {
+  color: greenyellow
+}
+
+.z {
+  color: blue
+}
+</style>
 
 
 <script setup lang="ts">
 import { Axes } from '../types'
+import * as Constants from '@/const';
 import { BufferGeometry, CylinderGeometry, Group, Line, LineBasicMaterial, Matrix3, Matrix4, Mesh, MeshBasicMaterial, PerspectiveCamera, Quaternion, Scene, Vector3, WebGLRenderer } from 'three'
-import { onMounted, ref, inject, watch, type Ref, type ShallowRef, provide, computed, shallowRef } from 'vue'
+import { onMounted, ref, inject, watch, type Ref, type ShallowRef, computed } from 'vue'
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
+import Snap from './Snap.vue'
 
 // Reactive stuff
 const isEdit: ShallowRef<Boolean> = inject("isEdit")!
@@ -175,11 +228,11 @@ function decCurrAxisRot() {
 }
 
 function incSnapDenom() {
-  snapDenom.value += snapDenom.value < 100 ? 1 : 0
+  snapDenom.value += snapDenom.value < Constants.MAX_SNAP_DENOM ? 1 : 0
 }
 
 function decSnapDenom() {
-  snapDenom.value -= snapDenom.value > 1 ? 1 : 0
+  snapDenom.value -= snapDenom.value > Constants.MIN_SNAP_DENOM ? 1 : 0
 }
 
 function handleScroll(event: WheelEvent) {
@@ -366,36 +419,3 @@ onMounted(() => {
   loop()
 })
 </script>
-
-
-<style scoped>
-span {
-  font-size: 20pt;
-}
-
-.coord {
-  font-size: 30pt;
-  width: 50px;
-  height: 50px;
-  margin: 10px;
-}
-
-.sign {
-  font-size: 20pt;
-  width: 30px;
-  height: 30px;
-  margin: 10px;
-}
-
-.x {
-  color: red
-}
-
-.y {
-  color: greenyellow
-}
-
-.z {
-  color: blue
-}
-</style>

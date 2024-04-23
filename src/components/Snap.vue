@@ -1,13 +1,25 @@
 <script setup lang="ts">
-import { type ShallowRef, shallowRef, inject } from 'vue';
+import { type ShallowRef, inject } from 'vue';
 import IconPi from './icons/IconPi.vue';
-const snapDenom = inject("snapDenom")
-const isAlt = inject("isAlt")
+import * as Constants from '@/const';
+const snapDenom: ShallowRef<number> = inject("snapDenom")!
+const isAlt: ShallowRef<Boolean> = inject("isAlt")!
+
+const plus = () => decSnapDenom()
+const minus = () => incSnapDenom()
+
+function incSnapDenom() {
+    snapDenom.value += snapDenom.value < Constants.MAX_SNAP_DENOM ? 1 : 0
+}
+
+function decSnapDenom() {
+    snapDenom.value -= snapDenom.value > Constants.MIN_SNAP_DENOM ? 1 : 0
+}
 </script>
 
 <template>
-    <div>
-        <span>Snap: </span>
+    <div class="label">
+        <span>Snap size: </span>
     </div>
     <div class="frac">
         <div class="pi">
@@ -18,6 +30,10 @@ const isAlt = inject("isAlt")
             {{ snapDenom }}
         </div>
     </div>
+    <div class="buttons">
+        <button class="plus" @click="plus">+</button>
+        <button class="minus" @click="minus">-</button>
+    </div>
 </template>
 
 <style scoped>
@@ -27,6 +43,11 @@ const isAlt = inject("isAlt")
     align-items: center;
     line-height: 1;
     gap: 0.2em;
+    user-select: none;
+}
+
+.label {
+    user-select: none;
 }
 
 .pi {
@@ -46,5 +67,35 @@ hr {
 
 .active {
     color: white;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+}
+
+button {
+    font-size: 12pt;
+    border-width: 0px;
+    cursor: pointer;
+    color: var(--c-text-dark-2);
+    border: 1px solid var(--c-divider-dark-1);
+    background-color: var(--c-bg-btn);
+}
+
+button:hover {
+    background-color: var(--c-bg-btn-hover);
+}
+
+button:active {
+    background-color: var(--c-bg-btn-active);
+}
+
+.plus {
+    border-radius: 50% 50% 0 0;
+}
+
+.minus {
+    border-radius: 0 0 50% 50%;
 }
 </style>

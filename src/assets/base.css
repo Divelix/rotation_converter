@@ -25,6 +25,10 @@
   --c-bg-quat-y: rgba(0, 255, 0, var(--quat-bg-alpha));
   --c-bg-quat-z: rgba(0, 0, 255, var(--quat-bg-alpha));
   --c-bg-quat-w: rgba(255, 255, 0, var(--quat-bg-alpha));
+
+  --c-bg-btn: #282828;
+  --c-bg-btn-hover: #333;
+  --c-bg-btn-active: #555;
 }
 
 /* semantic color variables for this project */

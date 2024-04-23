@@ -46,9 +46,17 @@ button {
     text-align: center;
     justify-content: center;
     padding: 10px;
-    background-color: #282828;
     border-radius: 20%;
-    border: 1px solid var(--c-divider-dark-1);
     cursor: pointer;
+    border: 1px solid var(--c-divider-dark-1);
+    background-color: var(--c-bg-btn);
+}
+
+button:hover {
+    background-color: var(--c-bg-btn-hover);
+}
+
+button:active {
+    background-color: var(--c-bg-btn-active);
 }
 </style>

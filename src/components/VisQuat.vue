@@ -171,6 +171,7 @@ watch(quat, (newQuat) => {
 
 .quat-grid {
     display: flex;
+    user-select: none;
 }
 
 .axis-value {
