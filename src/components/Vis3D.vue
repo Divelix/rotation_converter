@@ -287,11 +287,11 @@ function onKeydown(event: KeyboardEvent) {
       break
     case "ArrowUp":
     case "KeyK":
-      incSnapDenom()
+      decSnapDenom()
       break
     case "ArrowDown":
     case "KeyJ":
-      decSnapDenom()
+      incSnapDenom()
       break
     case "ArrowLeft":
     case "KeyH":

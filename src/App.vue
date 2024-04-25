@@ -5,6 +5,7 @@ import Vis3D from './components/Vis3D.vue'
 import VisControls from './components/VisControls.vue'
 import VisMat from './components/VisMat.vue'
 import VisQuat from './components/VisQuat.vue'
+import Help from './components/Help.vue'
 
 provide("isLocal", shallowRef(true))
 provide("isEdit", shallowRef(false))
@@ -25,6 +26,7 @@ provide("snapDenom", shallowRef(6))
 <template>
   <header>
     <h1>Rotation Converter</h1>
+    <Help />
   </header>
 
   <main>
