@@ -256,6 +256,10 @@ function handleScroll(event: WheelEvent) {
   }
 }
 
+function handleBlur() {
+  isAlt.value = false
+}
+
 function onKeydown(event: KeyboardEvent) {
   if (isEdit.value) {
     return
@@ -415,6 +419,7 @@ onMounted(() => {
   experience.value?.addEventListener('wheel', handleScroll)
   window.addEventListener("keydown", onKeydown)
   window.addEventListener("keyup", onKeyup)
+  window.addEventListener("blur", handleBlur)
   reset()
   loop()
 })

@@ -2,7 +2,7 @@
 import { shallowRef } from 'vue';
 import IconQuestion from './icons/IconQuestion.vue';
 
-const active = shallowRef(true)
+const active = shallowRef(false)
 </script>
 
 <template>
