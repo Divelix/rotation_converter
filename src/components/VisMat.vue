@@ -58,8 +58,9 @@ const parse9floats = (input: String): number[] | null => {
 const isOrthNorm = (nums: number[]): boolean => {
     const mat = new Matrix3().fromArray(nums)
     // Check if orthogonal
-    const productMat = mat.clone().multiply(mat.clone().transpose())
-    const isOrthogonal = Math.abs(productMat.determinant() - 1) < Constants.SMALL_NUMBER
+    const product = mat.multiply(mat.clone().transpose())
+    const areEqual = (a1: number[], a2: number[]) => a1.every((val, idx) => val === a2[idx])
+    const isOrthogonal = areEqual(product.elements, new Matrix3().identity().elements)
 
     // Check if normal
     const isNormal = Math.abs(mat.determinant() - 1) < Constants.SMALL_NUMBER
