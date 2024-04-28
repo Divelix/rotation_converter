@@ -1,12 +1,12 @@
-/* color palette from <https://github.com/vuejs/theme> */
 :root {
-  --c-white: #ffffff;
-  --c-white-soft: #f8f8f8;
-  --c-white-mute: #f2f2f2;
+  --c-light-0: #ffffff;
+  --c-light-1: #f8f8f8;
+  --c-light-2: #f2f2f2;
 
-  --c-black: #181818;
-  --c-black-soft: #222222;
-  --c-black-mute: #282828;
+  --c-dark-0: #000000;
+  --c-dark-1: #181818;
+  --c-dark-2: #222222;
+  --c-dark-3: #282828;
 
   --c-indigo: #2c3e50;
 
@@ -17,7 +17,7 @@
 
   --c-text-light-1: var(--c-indigo);
   --c-text-light-2: rgba(60, 60, 60, 0.66);
-  --c-text-dark-1: var(--c-white);
+  --c-text-dark-1: var(--c-light-0);
   --c-text-dark-2: rgba(235, 235, 235, 0.64);
 
   --quat-bg-alpha: 0.1;
@@ -33,9 +33,9 @@
 
 /* semantic color variables for this project */
 :root {
-  --color-background: var(--c-white);
-  --color-background-soft: var(--c-white-soft);
-  --color-background-mute: var(--c-white-mute);
+  --color-background: var(--c-light-0);
+  --color-background-soft: var(--c-light-1);
+  --color-background-mute: var(--c-light-2);
 
   --color-border: var(--c-divider-light-2);
   --color-border-hover: var(--c-divider-light-1);
@@ -46,9 +46,9 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-background: var(--c-black);
-    --color-background-soft: var(--c-black-soft);
-    --color-background-mute: var(--c-black-mute);
+    --color-background: var(--c-dark-1);
+    --color-background-soft: var(--c-dark-2);
+    --color-background-mute: var(--c-dark-3);
 
     --color-border: var(--c-divider-dark-2);
     --color-border-hover: var(--c-divider-dark-1);

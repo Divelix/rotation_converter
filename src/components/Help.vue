@@ -90,7 +90,6 @@ button {
     width: 50px;
     height: 50px;
     padding: 0 15px 0 15px;
-    background-color: black;
     border: 1px solid var(--c-divider-dark-1);
     background-color: var(--c-bg-btn);
     border-radius: 50%;

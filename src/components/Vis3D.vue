@@ -1,59 +1,3 @@
-<template>
-  <div class="container">
-    <canvas ref="experience"></canvas>
-    <div class="snap">
-      <Snap />
-    </div>
-  </div>
-</template>
-
-<style scoped>
-.container {
-  position: relative;
-}
-
-.snap {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  display: flex;
-  place-content: center;
-  align-items: center;
-  gap: 0.5em;
-}
-
-span {
-  font-size: 20pt;
-}
-
-.coord {
-  font-size: 30pt;
-  width: 50px;
-  height: 50px;
-  margin: 10px;
-}
-
-.sign {
-  font-size: 20pt;
-  width: 30px;
-  height: 30px;
-  margin: 10px;
-}
-
-.x {
-  color: red
-}
-
-.y {
-  color: greenyellow
-}
-
-.z {
-  color: blue
-}
-</style>
-
-
 <script setup lang="ts">
 import { Axes } from '../types'
 import * as Constants from '@/const';
@@ -74,7 +18,7 @@ const axisCounters: Ref<number[]> = inject("axisCounters")!
 const rotMat: Ref<number[]> = inject("rotMat")!
 const quat: Ref<number[]> = inject("quat")!
 const currAxis: Ref<Axes> = inject("currAxis")!
-const experience = ref<HTMLCanvasElement | null>(null)
+const canvas = ref<HTMLCanvasElement | null>(null)
 const snapSize = computed(() => Math.PI / snapDenom.value)
 
 // Constants
@@ -407,7 +351,7 @@ const loop = () => {
 
 onMounted(() => {
   renderer = new WebGLRenderer({
-    canvas: experience.value as unknown as HTMLCanvasElement,
+    canvas: canvas.value as unknown as HTMLCanvasElement,
     antialias: true,
   })
   renderer.setClearColor(0x282828)
@@ -416,7 +360,7 @@ onMounted(() => {
   controls = new OrbitControls(camera, renderer.domElement)
   controls.enablePan = false
   controls.enableZoom = false
-  experience.value?.addEventListener('wheel', handleScroll)
+  canvas.value?.addEventListener('wheel', handleScroll)
   window.addEventListener("keydown", onKeydown)
   window.addEventListener("keyup", onKeyup)
   window.addEventListener("blur", handleBlur)
@@ -424,3 +368,58 @@ onMounted(() => {
   loop()
 })
 </script>
+
+<template>
+  <div class="container">
+    <canvas ref="canvas"></canvas>
+    <div class="snap">
+      <Snap />
+    </div>
+  </div>
+</template>
+
+<style scoped>
+.container {
+  position: relative;
+}
+
+.snap {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  place-content: center;
+  align-items: center;
+  gap: 0.5em;
+}
+
+span {
+  font-size: 20pt;
+}
+
+.coord {
+  font-size: 30pt;
+  width: 50px;
+  height: 50px;
+  margin: 10px;
+}
+
+.sign {
+  font-size: 20pt;
+  width: 30px;
+  height: 30px;
+  margin: 10px;
+}
+
+.x {
+  color: red
+}
+
+.y {
+  color: greenyellow
+}
+
+.z {
+  color: blue
+}
+</style>
