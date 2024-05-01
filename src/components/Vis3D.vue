@@ -259,6 +259,9 @@ function onKeydown(event: KeyboardEvent) {
     case "ControlLeft":
       focusZ()
       break
+    case "KeyV":
+      renderer.setSize(300, 300)
+      break
   }
 }
 
@@ -354,8 +357,8 @@ onMounted(() => {
     canvas: canvas.value as unknown as HTMLCanvasElement,
     antialias: true,
   })
-  renderer.setClearColor(0x282828)
-  renderer.setSize(W, H)
+  renderer.setClearColor(0x222222)
+  // renderer.setSize(W, H)
   renderer.render(scene, camera)
   controls = new OrbitControls(camera, renderer.domElement)
   controls.enablePan = false
@@ -371,7 +374,7 @@ onMounted(() => {
 
 <template>
   <div class="container">
-    <canvas ref="canvas"></canvas>
+    <canvas width="500" height="500" ref="canvas"></canvas>
     <div class="snap">
       <Snap />
     </div>
@@ -385,8 +388,8 @@ onMounted(() => {
 
 .snap {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 20px;
+  right: 20px;
   display: flex;
   place-content: center;
   align-items: center;
@@ -422,4 +425,19 @@ span {
 .z {
   color: blue
 }
+
+canvas {
+  width: 500px;
+  height: 500px;
+  border-radius: var(--cont-border-radius);
+  /* width: 300px;
+  height: 300px; */
+}
+
+/* @media screen and (min-aspect-ratio: 1/1) {
+  canvas {
+    width: 500px;
+    height: 500px;
+  }
+} */
 </style>

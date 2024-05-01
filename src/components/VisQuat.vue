@@ -156,7 +156,14 @@ watch(quat, (newQuat) => {
 </template>
 
 <style scoped>
+h2 {
+    color: white;
+}
+
 .quat {
+    background-color: var(--c-dark-2);
+    border-radius: var(--cont-border-radius);
+    padding: 10px;
     display: flex;
     flex-direction: column;
     place-content: center;
@@ -176,12 +183,14 @@ watch(quat, (newQuat) => {
 
 .axis-value {
     padding: 10px;
+    font-size: 20pt;
 }
 
 .axis-label {
-    border-radius: 0 0 30px 30px;
+    border-radius: 0 0 50px 50px;
     text-align: center;
-    padding: 5px;
+    padding: 10px;
+    font-size: 14pt;
 }
 
 .x .axis-label {
@@ -205,10 +214,6 @@ watch(quat, (newQuat) => {
     gap: 5px;
 }
 
-table {
-    user-select: none;
-}
-
 textarea {
     resize: none;
     background-color: #282828;
@@ -216,13 +221,15 @@ textarea {
     border-radius: 10px;
     color: white;
     width: 200px;
-    height: 100px;
+    height: 120px;
+    padding: 10px;
+    margin: 10px;
 }
 
 .action-buttons {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 1em;
 }
 
 .invisible {
@@ -231,17 +238,6 @@ textarea {
 
 .one {
     color: white;
-}
-
-table {
-    border-collapse: collapse;
-    white-space: pre-wrap;
-}
-
-td {
-    border: 1px solid #858585;
-    padding: 8px;
-    text-align: center;
 }
 
 .error {

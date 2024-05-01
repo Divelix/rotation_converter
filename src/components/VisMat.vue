@@ -11,7 +11,7 @@ import * as Constants from '@/const';
 
 const COPY_TEXT = "Copied matrix to clipboard"
 const PARSE_ERROR_TEXT = "Matrix parsing error"
-const ORTHO_ERROR_TEXT = "Matrix must be orthnormal"
+const ORTHO_ERROR_TEXT = "Matrix must be orthonormal"
 
 const isEdit: ShallowRef<Boolean> = inject("isEdit")!
 const toastMsg: ShallowRef<String> = inject("toastMsg")!
@@ -169,7 +169,14 @@ watch(rotMat, (newRotMat) => {
 </template>
 
 <style scoped>
+h2 {
+    color: white;
+}
+
 .rot {
+    background-color: var(--c-dark-2);
+    border-radius: var(--cont-border-radius);
+    padding: 10px;
     display: flex;
     flex-direction: column;
     place-content: center;
@@ -178,7 +185,8 @@ watch(rotMat, (newRotMat) => {
 
 .content {
     display: flex;
-    align-items: center;
+    /* align-items: center; */
+    /* justify-content: space-between; */
     gap: 1em;
 }
 
@@ -194,12 +202,15 @@ textarea {
     color: white;
     width: 300px;
     height: 100px;
+    padding: 10px;
+    margin: 10px;
 }
 
 .action-buttons {
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 1em;
+    /* gap: 5px; */
 }
 
 .invisible {
@@ -219,6 +230,7 @@ td {
     /* border: 1px solid #858585; */
     padding: 8px;
     text-align: center;
+    font-size: 20pt;
 }
 
 .error {
