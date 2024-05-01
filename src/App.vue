@@ -54,10 +54,11 @@ main {
   flex-direction: column;
   justify-content: space-evenly;
   align-items: center;
-  gap: 1em
+  gap: 15px;
 }
 
 .vis {
+  padding-left: 55px;
   display: flex;
   place-content: center;
   gap: 1em;
@@ -67,28 +68,29 @@ main {
   display: flex;
   place-content: center;
   align-items: center;
-  gap: 0.5em;
 }
 
 .repr {
   display: flex;
-  width: 100%;
-  flex-direction: row;
-  justify-content: space-evenly;
+  flex-direction: column;
+  gap: 20px;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 1280px) {
   main {
     flex-direction: row;
     align-items: center;
     justify-content: space-evenly;
   }
 
+  .vis {
+    padding-left: 0px;
+  }
+
   .repr {
     width: auto;
     flex-direction: column;
     align-items: center;
-    gap: 3em;
   }
 }
 </style>
