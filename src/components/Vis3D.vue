@@ -1,10 +1,21 @@
 <script setup lang="ts">
 import { Axes } from '../types'
 import * as Constants from '@/const';
-import { BufferGeometry, CylinderGeometry, Group, Line, LineBasicMaterial, Matrix3, Matrix4, Mesh, MeshBasicMaterial, PerspectiveCamera, Quaternion, Scene, Vector3, WebGLRenderer } from 'three'
-import { onMounted, ref, inject, watch, type Ref, type ShallowRef, computed } from 'vue'
+import { BufferGeometry, CylinderGeometry, Group, Line, LineBasicMaterial, Matrix3, Matrix4, Mesh, MeshBasicMaterial, PerspectiveCamera, Quaternion, Scene, Vector3, WebGLRenderer, type ColorRepresentation } from 'three'
+import { onMounted, ref, inject, watch, type Ref, type ShallowRef, computed, type WritableComputedRef, shallowRef } from 'vue'
 import { OrbitControls } from 'three/examples/jsm/Addons.js';
 import Snap from './Snap.vue'
+
+// Constants
+const [W, H] = [500, 500]
+const CAM_POS = new Vector3(2, 2, 2)
+const CAM_LOOKAT = new Vector3(0, 0, 0)
+const AXIS_LEN = 2
+const CYL_RADIUS = 0.05
+const CYL_LENGTH = 1
+const CYL_RESOLUTION = 10
+const DARK_COLOR = 0x222222
+const LIGHT_COLOR = 0xaaaaaa
 
 // Reactive stuff
 const isEdit: ShallowRef<Boolean> = inject("isEdit")!
@@ -18,17 +29,10 @@ const axisCounters: Ref<number[]> = inject("axisCounters")!
 const rotMat: Ref<number[]> = inject("rotMat")!
 const quat: Ref<number[]> = inject("quat")!
 const currAxis: Ref<Axes> = inject("currAxis")!
+const isDark: WritableComputedRef<Boolean> = inject("isDark")!
+const canvasBgColor = computed(() => isDark.value ? DARK_COLOR : LIGHT_COLOR)
 const canvas = ref<HTMLCanvasElement | null>(null)
 const snapSize = computed(() => Math.PI / snapDenom.value)
-
-// Constants
-const [W, H] = [500, 500]
-const CAM_POS = new Vector3(2, 2, 2)
-const CAM_LOOKAT = new Vector3(0, 0, 0)
-const AXIS_LEN = 2
-const CYL_RADIUS = 0.05
-const CYL_LENGTH = 1
-const CYL_RESOLUTION = 10
 
 // Variables
 let controls: OrbitControls
@@ -57,6 +61,10 @@ watch(needReset, (newReset) => {
   if (!newReset) return
   reset()
   needReset.value = false
+})
+
+watch(isDark, (newIsDark) => {
+  renderer.setClearColor(canvasBgColor.value)
 })
 
 // Methods
@@ -357,7 +365,7 @@ onMounted(() => {
     canvas: canvas.value as unknown as HTMLCanvasElement,
     antialias: true,
   })
-  renderer.setClearColor(0x222222)
+  renderer.setClearColor(canvasBgColor.value)
   // renderer.setSize(W, H)
   renderer.render(scene, camera)
   controls = new OrbitControls(camera, renderer.domElement)

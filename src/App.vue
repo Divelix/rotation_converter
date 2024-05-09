@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { provide, ref, shallowRef } from 'vue'
+import { useDark } from '@vueuse/core'
 import { Axes, ToastType } from './types'
 import Vis3D from './components/Vis3D.vue'
 import VisControls from './components/VisControls.vue'
@@ -22,6 +23,7 @@ provide("rotMat", ref(new Array(9).fill(0)))
 provide("quat", ref(new Array(4).fill(0)))
 provide("currAxis", ref(Axes.X))
 provide("snapDenom", shallowRef(6))
+provide("isDark", useDark())
 
 </script>
 
