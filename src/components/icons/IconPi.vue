@@ -8,10 +8,10 @@
 
 <style scoped>
 path {
-  fill: var(--c-text-dark-2);
+  fill: var(--c-svg);
 }
 
 .active path {
-  fill: white;
+  fill: var(--c-text-accent);
 }
 </style>

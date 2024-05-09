@@ -90,27 +90,27 @@ button {
     width: 50px;
     height: 50px;
     padding: 0 15px 0 15px;
-    border: 1px solid var(--c-divider-dark-1);
-    background-color: var(--c-bg-btn);
+    border: 1px solid var(--c-btn-border);
+    background-color: var(--c-btn-bg);
     border-radius: 50%;
     cursor: pointer;
     z-index: 2;
 }
 
 button:hover {
-    background-color: var(--c-bg-btn-hover);
+    background-color: var(--c-btn-bg-hover);
 }
 
 button:active {
-    background-color: var(--c-bg-btn-active);
+    background-color: var(--c-btn-bg-active);
 }
 
 .content {
     z-index: 1;
     top: 15px;
     right: 15px;
-    border: 1px solid var(--c-divider-dark-1);
-    background-color: var(--c-bg-btn);
+    border: 1px solid var(--c-table-border);
+    background-color: var(--c-table-bg);
     padding: 0 70px 20px 70px;
     display: flex;
     flex-direction: column;
@@ -122,12 +122,12 @@ table {
 }
 
 .header-row {
-    color: white;
-    background-color: var(--c-bg-btn-hover);
+    color: var(--c-text-accent);
+    background-color: var(--c-table-header);
 }
 
 td {
-    border: 1px solid var(--c-divider-dark-1);
+    border: 1px solid var(--c-table-border);
     padding: 10px;
 }
 </style>

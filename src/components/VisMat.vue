@@ -169,12 +169,16 @@ watch(rotMat, (newRotMat) => {
 </template>
 
 <style scoped>
+svg {
+    fill: var(--c-svg);
+}
+
 h2 {
-    color: white;
+    color: var(--c-text-accent);
 }
 
 .rot {
-    background-color: var(--c-dark-2);
+    background-color: var(--c-bg-accent);
     border-radius: var(--cont-border-radius);
     padding: 10px;
     display: flex;
@@ -185,8 +189,6 @@ h2 {
 
 .content {
     display: flex;
-    /* align-items: center; */
-    /* justify-content: space-between; */
     gap: 1em;
 }
 
@@ -196,10 +198,10 @@ table {
 
 textarea {
     resize: none;
-    background-color: #282828;
-    border-color: #414141;
+    background-color: var(--c-btn-bg);
+    border-color: var(--c-btn-border);
     border-radius: 10px;
-    color: white;
+    color: var(--c-text-accent);
     width: 300px;
     height: 100px;
     padding: 10px;
@@ -210,7 +212,6 @@ textarea {
     display: flex;
     flex-direction: column;
     gap: 1em;
-    /* gap: 5px; */
 }
 
 .invisible {
@@ -218,7 +219,7 @@ textarea {
 }
 
 .one {
-    color: white;
+    color: var(--c-text-accent);
 }
 
 table {
@@ -227,13 +228,12 @@ table {
 }
 
 td {
-    /* border: 1px solid #858585; */
     padding: 8px;
     text-align: center;
     font-size: 20pt;
 }
 
 .error {
-    border-color: red;
+    border-color: var(--c-error);
 }
 </style>

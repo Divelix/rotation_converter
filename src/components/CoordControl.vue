@@ -69,8 +69,7 @@ button {
     font-size: 24pt;
     padding-left: 10px;
     padding-right: 10px;
-    color: #ffffff;
-    /* text-shadow: 0px 0px 5px #000; */
+    color: var(--c-text-accent);
     border-width: 0px;
     cursor: pointer;
 }
@@ -84,26 +83,26 @@ button {
 }
 
 .x .label {
-    background-color: #ff000077;
+    background-color: var(--c-x-t);
 }
 
 .x button {
-    background-color: #ff0000;
+    background-color: var(--c-x);
 }
 
 .y .label {
-    background-color: #00ff0077;
+    background-color: var(--c-y-t);
 }
 
 .y button {
-    background-color: #00ff00;
+    background-color: var(--c-y);
 }
 
 .z .label {
-    background-color: #0000ff77;
+    background-color: var(--c-z-t);
 }
 
 .z button {
-    background-color: #0000ff;
+    background-color: var(--c-z);
 }
 </style>
