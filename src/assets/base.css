@@ -1,6 +1,10 @@
 :root {
   --c-light-0: #ffffff;
   --c-light-1: #eeeeee;
+  --c-light-2: #aaaaaa;
+  --c-light-3: #888888;
+  --c-light-4: #777777;
+  --c-light-5: #555555;
   --c-light-t: rgba(235, 235, 235, 0.64);
 
   --c-dark-0: #000000;
