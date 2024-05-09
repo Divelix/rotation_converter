@@ -48,15 +48,15 @@ button {
     padding: 10px;
     border-radius: 20%;
     cursor: pointer;
-    border: 1px solid var(--c-divider-dark-1);
-    background-color: var(--c-bg-btn);
+    border: 1px solid var(--c-btn-border);
+    background-color: var(--c-btn-bg);
 }
 
 button:hover {
-    background-color: var(--c-bg-btn-hover);
+    background-color: var(--c-btn-bg-hover);
 }
 
 button:active {
-    background-color: var(--c-bg-btn-active);
+    background-color: var(--c-btn-bg-active);
 }
 </style>

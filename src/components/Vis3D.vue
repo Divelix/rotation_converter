@@ -415,29 +415,20 @@ span {
 }
 
 .x {
-  color: red
+  color: var(--c-x)
 }
 
 .y {
-  color: greenyellow
+  color: var(--c-y)
 }
 
 .z {
-  color: blue
+  color: var(--c-z)
 }
 
 canvas {
   width: 500px;
   height: 500px;
   border-radius: var(--cont-border-radius);
-  /* width: 300px;
-  height: 300px; */
 }
-
-/* @media screen and (min-aspect-ratio: 1/1) {
-  canvas {
-    width: 500px;
-    height: 500px;
-  }
-} */
 </style>

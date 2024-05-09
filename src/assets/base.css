@@ -1,24 +1,24 @@
 :root {
   --c-light-0: #ffffff;
-  --c-light-1: #f8f8f8;
-  --c-light-2: #f2f2f2;
+  --c-light-1: #eeeeee;
+  --c-light-t: rgba(235, 235, 235, 0.64);
 
   --c-dark-0: #000000;
   --c-dark-1: #181818;
   --c-dark-2: #222222;
   --c-dark-3: #282828;
+  --c-dark-4: #333333;
+  --c-dark-5: #555555;
+  --c-dark-t: rgba(84, 84, 84, 0.65);
 
-  --c-indigo: #2c3e50;
+  --c-error: #ff0000;
 
-  --c-divider-light-1: rgba(60, 60, 60, 0.29);
-  --c-divider-light-2: rgba(60, 60, 60, 0.12);
-  --c-divider-dark-1: rgba(84, 84, 84, 0.65);
-  --c-divider-dark-2: rgba(84, 84, 84, 0.48);
-
-  --c-text-light-1: var(--c-indigo);
-  --c-text-light-2: rgba(60, 60, 60, 0.66);
-  --c-text-dark-1: var(--c-light-0);
-  --c-text-dark-2: rgba(235, 235, 235, 0.64);
+  --c-x: #ff0000;
+  --c-y: #00ff00;
+  --c-z: #0000ff;
+  --c-x-t: #ff000077;
+  --c-y-t: #00ff0077;
+  --c-z-t: #0000ff77;
 
   --quat-bg-alpha: 0.3;
   --c-bg-quat-x: rgba(255, 0, 0, var(--quat-bg-alpha));
@@ -26,36 +26,56 @@
   --c-bg-quat-z: rgba(0, 0, 255, var(--quat-bg-alpha));
   --c-bg-quat-w: rgba(255, 255, 0, var(--quat-bg-alpha));
 
-  --c-bg-btn: #282828;
-  --c-bg-btn-hover: #333;
-  --c-bg-btn-active: #555;
-
   --cont-border-radius: 20px;
 }
 
 /* semantic color variables for this project */
 :root {
-  --color-background: var(--c-dark-1);
-  --color-background-soft: var(--c-dark-2);
-  --color-background-mute: var(--c-dark-3);
+  --c-text-main: var(--c-dark-t);
+  --c-text-accent: var(--c-dark-0);
 
-  --color-border: var(--c-divider-dark-2);
-  --color-border-hover: var(--c-divider-dark-1);
+  --c-bg-main: var(--c-light-1);
+  --c-bg-accent: var(--c-light-2);
+  --c-bg-canvas: var(--c-light-2);
 
-  --color-heading: var(--c-text-dark-1);
-  --color-text: var(--c-text-dark-2);
+  --c-selection: var(--c-light-1);
+  --c-bg-tooltip: var(--c-light-0);
+  --c-text-tooltip: var(--c-dark-0);
+
+  --c-btn-border: var(--c-light-t);
+  --c-btn-bg: var(--c-light-3);
+  --c-btn-bg-hover: var(--c-light-4);
+  --c-btn-bg-active: var(--c-light-5);
+  --c-table-bg: var(--c-light-3);
+  --c-table-header: var(--c-light-4);
+  --c-table-border: var(--c-light-t);
+  --c-svg: var(--c-dark-t);
+  --c-svg-hover: var(--c-dark-0);
 }
 
 .dark {
-  --color-background: var(--c-light-0);
-  --color-background-soft: var(--c-light-1);
-  --color-background-mute: var(--c-light-2);
+  --c-text-main: var(--c-light-t);
+  --c-text-accent: var(--c-light-0);
 
-  --color-border: var(--c-divider-light-2);
-  --color-border-hover: var(--c-divider-light-1);
+  --c-bg-main: var(--c-dark-1);
+  --c-bg-accent: var(--c-dark-2);
+  --c-bg-canvas: var(--c-dark-2);
 
-  --color-heading: var(--c-text-light-1);
-  --color-text: var(--c-text-light-1);
+  --c-selection: var(--c-dark-0);
+  --c-bg-tooltip: var(--c-dark-0);
+  --c-text-tooltip: var(--c-light-0);
+
+  --c-btn-border: var(--c-dark-t);
+  --c-btn-bg: var(--c-dark-3);
+  --c-btn-bg-hover: var(--c-dark-4);
+  --c-btn-bg-active: var(--c-dark-5);
+
+  --c-table-bg: var(--c-dark-3);
+  --c-table-header: var(--c-dark-4);
+  --c-table-border: var(--c-dark-t);
+
+  --c-svg: var(--c-light-t);
+  --c-svg-hover: var(--c-light-0);
 }
 
 *,
@@ -67,8 +87,8 @@
 }
 
 body {
-  color: var(--color-text);
-  background: var(--color-background);
+  color: var(--c-text-main);
+  background: var(--c-bg-main);
   transition:
     color 0.5s,
     background-color 0.5s;

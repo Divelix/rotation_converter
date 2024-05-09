@@ -20,21 +20,20 @@ h2 {
 }
 
 ::selection {
-  background-color: black;
+  background-color: var(--c-selection);
 }
 
 .tooltip {
   position: relative;
   display: inline-block;
-  border-bottom: 1px dotted black;
 }
 
 .tooltip .tooltiptext {
   line-height: 1.2;
   visibility: hidden;
   width: 120px;
-  background-color: black;
-  color: #fff;
+  background-color: var(--c-bg-tooltip);
+  color: var(--c-text-tooltip);
   text-align: center;
   padding: 5px 0;
   border-radius: 6px;

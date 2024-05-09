@@ -7,6 +7,6 @@
 
 <style scoped>
 path {
-  fill: var(--c-text-dark-2);
+  fill: var(--c-svg);
 }
 </style>

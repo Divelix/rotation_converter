@@ -53,20 +53,19 @@ function decSnapDenom() {
 .pi {
     width: 15px;
     height: 15px;
-    /* margin-bottom: 7px; */
 }
 
 hr {
     width: 100%;
-    border: 1px solid var(--c-text-dark-2);
+    border: 1px solid var(--c-text-main);
 }
 
 .active_hr {
-    border-color: white;
+    border-color: var(--c-text-accent);
 }
 
 .active {
-    color: white;
+    color: var(--c-text-accent);
 }
 
 .buttons {
@@ -78,17 +77,17 @@ button {
     font-size: 12pt;
     border-width: 0px;
     cursor: pointer;
-    color: var(--c-text-dark-2);
-    border: 1px solid var(--c-divider-dark-1);
-    background-color: var(--c-bg-btn);
+    color: var(--c-text-main);
+    border: 1px solid var(--c-btn-border);
+    background-color: var(--c-btn-bg);
 }
 
 button:hover {
-    background-color: var(--c-bg-btn-hover);
+    background-color: var(--c-btn-bg-hover);
 }
 
 button:active {
-    background-color: var(--c-bg-btn-active);
+    background-color: var(--c-btn-bg-active);
 }
 
 .plus {

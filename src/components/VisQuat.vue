@@ -157,11 +157,11 @@ watch(quat, (newQuat) => {
 
 <style scoped>
 h2 {
-    color: white;
+    color: var(--c-text-accent);
 }
 
 .quat {
-    background-color: var(--c-dark-2);
+    background-color: var(--c-bg-accent);
     border-radius: var(--cont-border-radius);
     padding: 10px;
     display: flex;
@@ -216,10 +216,10 @@ h2 {
 
 textarea {
     resize: none;
-    background-color: #282828;
-    border-color: #414141;
+    background-color: var(--c-btn-bg);
+    border-color: var(--c-btn-border);
     border-radius: 10px;
-    color: white;
+    color: var(--c-text-accent);
     width: 200px;
     height: 120px;
     padding: 10px;
@@ -237,10 +237,10 @@ textarea {
 }
 
 .one {
-    color: white;
+    color: var(--c-text-accent);
 }
 
 .error {
-    border-color: red;
+    border-color: var(--c-error);
 }
 </style>
