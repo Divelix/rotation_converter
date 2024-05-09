@@ -7,6 +7,7 @@ import VisMat from './components/VisMat.vue'
 import VisQuat from './components/VisQuat.vue'
 import Help from './components/Help.vue'
 import Links from './components/Links.vue'
+import ColorMode from './components/ColorMode.vue'
 
 provide("isLocal", shallowRef(true))
 provide("isEdit", shallowRef(false))
@@ -29,6 +30,7 @@ provide("snapDenom", shallowRef(6))
     <h1>Rotation Converter</h1>
     <Help />
     <Links />
+    <ColorMode />
   </header>
 
   <main>

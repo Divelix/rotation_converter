@@ -46,19 +46,17 @@
   --color-text: var(--c-text-dark-2);
 }
 
-/* @media (prefers-color-scheme: light) {
-  :root {
-    --color-background: var(--c-light-0);
-    --color-background-soft: var(--c-light-1);
-    --color-background-mute: var(--c-light-2);
+.dark {
+  --color-background: var(--c-light-0);
+  --color-background-soft: var(--c-light-1);
+  --color-background-mute: var(--c-light-2);
 
-    --color-border: var(--c-divider-light-2);
-    --color-border-hover: var(--c-divider-light-1);
+  --color-border: var(--c-divider-light-2);
+  --color-border-hover: var(--c-divider-light-1);
 
-    --color-heading: var(--c-text-light-1);
-    --color-text: var(--c-text-light-1);
-  }
-} */
+  --color-heading: var(--c-text-light-1);
+  --color-text: var(--c-text-light-1);
+}
 
 *,
 *::before,
