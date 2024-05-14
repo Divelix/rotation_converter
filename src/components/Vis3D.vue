@@ -15,7 +15,7 @@ const CYL_RADIUS = 0.05
 const CYL_LENGTH = 1
 const CYL_RESOLUTION = 10
 const DARK_COLOR = 0x222222
-const LIGHT_COLOR = 0xaaaaaa
+const LIGHT_COLOR = 0xd8d8d8
 
 // Reactive stuff
 const isEdit: ShallowRef<Boolean> = inject("isEdit")!

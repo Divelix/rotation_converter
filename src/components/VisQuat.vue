@@ -220,7 +220,7 @@ textarea {
     border-color: var(--c-btn-border);
     border-radius: 10px;
     color: var(--c-text-accent);
-    width: 200px;
+    width: 400px;
     height: 120px;
     padding: 10px;
     margin: 10px;

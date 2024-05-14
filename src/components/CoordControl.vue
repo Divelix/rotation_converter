@@ -82,6 +82,10 @@ button {
     border-radius: 0% 0% 50% 50%;
 }
 
+.label span {
+    color: var(--c-text-accent);
+}
+
 .x .label {
     background-color: var(--c-x-t);
 }
