@@ -119,6 +119,7 @@ button:active {
 table {
     border-collapse: collapse;
     line-height: 1;
+    color: var(--c-text-help)
 }
 
 .header-row {
