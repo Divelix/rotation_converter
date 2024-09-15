@@ -120,11 +120,21 @@ watch(isEditMat, (newIsEditMat) => {
 watch(rotMat, (newRotMat) => {
     updateMatStr(newRotMat)
 })
+
+const invert = () => {
+    const matrix = rotMat.value
+    rotMat.value = [
+        matrix[0], matrix[3], matrix[6],
+        matrix[1], matrix[4], matrix[7],
+        matrix[2], matrix[5], matrix[8]
+    ];
+    isMatApply.value = true
+}
 </script>
 
 <template>
     <div class="rot">
-        <h2>Rotation Matrix</h2>
+        <h2>Rotation Matrix <button @click="invert">inv</button></h2>
         <div class="content" v-if="isEditMat">
             <textarea ref="textarea" v-model="matStr" @focus="($event.target as HTMLTextAreaElement).select()"
                 :class="{ error: isError }"></textarea>
