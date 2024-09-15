@@ -134,7 +134,15 @@ const invert = () => {
 
 <template>
     <div class="rot">
-        <h2>Rotation Matrix <button @click="invert">inv</button></h2>
+        <h2>Rotation Matrix
+            <div class="tooltip">
+                <button @click="invert">inv
+                    <span class="tooltiptext">
+                        Inverting the rotation matrix is equivalent to transposing
+                    </span>
+                </button>
+            </div>
+        </h2>
         <div class="content" v-if="isEditMat">
             <textarea ref="textarea" v-model="matStr" @focus="($event.target as HTMLTextAreaElement).select()"
                 :class="{ error: isError }"></textarea>
